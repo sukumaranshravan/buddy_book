@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/bootstrap-5.3.2-dist/css/bootstrap.css">
+    <script src="/static/bootstrap-5.3.2-dist/js/bootstrap.js"></script>
+    <link rel="shortcut icon" href="/media/buddy_book_Logo.png" type="image/x-icon">
+    <title>Log In Buddy Book...</title>
+</head>
+<body class="bg-dark-subtle">    
+    <div class="container h-50 pt-5">
+        <section class="vh-50" style="background-color: rgb(255, 255, 255);">
+        <div class="row p-5">
+            <div class="col-6 p-5">    
+                    <form action="{% url 'log_in' %}" method="post">
+                        {% csrf_token %}            
+                    <p><b>User Name</b></p>
+                    <input type="text" name="user_name" class="form-control" placeholder="user name">            
+                    <p><b>Password</b></p>  
+                    <input type="text" name="password" class="form-control" placeholder="password">  
+                    <br>              
+                    <input type="submit" value="Log In" class="btn btn-primary col-10">            
+                    </form>
+                    <p style="color: rgb(12, 12, 12);">Not a member? <a href="{% url 'register' %}" >Register</a></p>                                              
+            </div>
+            <div class="col-6">
+                <img src="/media/buddy_book_Logo.png" height="400px" width="400px">
+                <h5 style="text-rendering: geometricPrecision;"><b><em style="color: rgb(14, 14, 124);">A Perfect Place to join, connect, share and enjoy seemlessly</em></b></h5>
+            </div>
+                        </section>
+            </div>
+            {% if messages  %}
+            {% for msg in messages %}
+            <script>
+                alert("{{msg}}")
+            </script>
+            {% endfor %}
+            {% endif %}
+</body>
+</html>

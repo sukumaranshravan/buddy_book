@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="/static/bootstrap-5.3.2-dist/css/bootstrap.css">
+    <script src="/static/bootstrap-5.3.2-dist/js/bootstrap.js"></script>
+</head>
+<body style="background-color: rgb(76, 244, 157);">
+    <div class="container p-3">
+        <div class="navbar navbar-dark p-2">            
+        </div>
+        <div class="row p-3">
+            <div class="col-12 p-2">
+               <table class="bg-white p-3">
+                <form action="{% url 'registeraction' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                <tr>
+                    <th>First Name</th>                       
+                    <td><input type="text" name="first_name" class="form-control p-2"></td>
+                </tr>
+                <tr>
+                    <th> Last Name</th>
+                    <td><input type="text" name="last_name" class="form-control p-2"></td>
+                </tr>
+                <tr>
+                    <th>Gender</th>
+                    <td><input type="radio" name="gender" value="male" class="form-check-input"><label class="form-check-label">Male</label>  
+                        <input type="radio" name="gender" value="female" class="form-check-input"><label class="form-check-label">Female</label>
+                        <input type="radio" name="gender" value="other" class="form-check-input"><label class="form-check-label">Other</label></td>
+                </tr>
+                <tr>
+                    <th>Date of Birth</th>
+                    <td><input type="date" name="dob" class="form-control"></td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td><input type="text" name="email" class="form-control"></td>
+                </tr>
+                <tr>
+                    <th>Contact</th>
+                    <td><input type="text" name="phone" class="form-control"></td>
+                </tr>
+                <tr>
+                   <th>Address</th>
+                   <td><textarea name="address" class="form-control" cols="30" rows="5"></textarea></td>
+                </tr>
+                <tr>
+                    <th>Profile Picture</th>
+                    <td><input type="file" name="photo" class="form-control"></td>
+                </tr>
+                <tr>
+                    <th>User Name</th>
+                    <td><input type="text" name="user_name" class="form-control"></td>
+                </tr>
+                <tr>
+                    <th>Password</th>
+                    <td><input type="text" name="password" class="form-control"></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td><input type="submit" value="Sign Up" class="btn btn-primary"></td>
+                </tr>
+                </form>
+               </table>
+        </div>
+
+    </div>
+</body>
+</html>

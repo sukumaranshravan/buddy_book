@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Friend Requests</title>
+  <link rel="stylesheet" href="/static/bootstrap-5.3.2-dist/css/bootstrap.css">
+  <script src="/static/bootstrap-5.3.2-dist/js/bootstrap.js"></script>
+</head>
+<body style="background-color:rgb(241, 244, 246);">
+  <div class="container bg-white">
+      <div class="navbar navbar-expand-lg bg-primary">
+          <img src="/media/buddy_book_Logo.png" alt="" height="100" width="100" class="bg-white"><h5 style="color:white;">buddybook</h5>&nbsp;&nbsp;&nbsp;&nbsp;<h6 class="align-content-end"></h6><h6>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'log_out' %}" class="text-white">Sign Out?</a></h6>
+      </div>
+      <div class="row">            
+          <div class="col-4 border">
+              <ul>
+                  <li><a href="{% url 'home' %}">Home</a></li>
+                  <li>My Friends</li>
+                  <li>My Photos</li>
+                  <li>Basic Information</li>
+                  <li>Settings</li>
+              </ul>
+          </div>
+          <div class="col-8 border">
+                <div>
+                    {% for i in key %}
+                     <table class="border-2">
+                        <form action="{% url 'accept' i.id %}" method="post">
+                            {% csrf_token %}
+                        <tr>
+                            <td><input type="hidden" name="user_id" value="{{i.request_from.id}}"></td>
+                        </tr>                    
+                        <tr>
+                            <th>Name</th>
+                            <td class="form-control"><div class="col-2">                                
+                                <img src="{{i.request_from.photo.url}}" alt="No picture" height="100px" width="100px">                                                              
+                            </div>{{i.request_from.first_name}}&nbsp;{{i.request_from.last_name}}</td>                 
+                        </tr>
+                        <tr>
+                            <th>Gender</th>
+                            <td class="form-control">{{i.request_from.gender}}</td>                                  
+                        </tr>
+                        <tr>
+                            <th>Address</th>
+                            <td class="form-control">{{i.request_from.address}}</td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td><input type="submit" value="Accept" class="btn btn-success"></td>
+                            <td><a href="{% url 'reject' i.id %}" class="text-danger">Reject</a> </td>
+                        </form>
+                        </tr> 
+                                                
+                     </table>   
+                     {% endfor %}                                  
+                </div>          
+            </div>     
+        </div>
+    </div>
+  {% if messages  %}
+          {% for msg in messages %}
+          <script>
+              alert("{{msg}}")
+          </script>
+          {% endfor %}
+          {% endif %}
+</body>
+</html>
