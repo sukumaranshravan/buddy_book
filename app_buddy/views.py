@@ -42,13 +42,15 @@ def home(request):
     buddy=register_tb.objects.filter(id=my_id)
     name=buddy[0].user_name
     got_a_buddy=friend_tb.objects.filter(status=my_id)
-    if got_a_buddy.count()>0:
-        buddy_id=got_a_buddy[0].request_from_id
-        view_post=post_tb.objects.filter(user_id_id=my_id,status='public') | post_tb.objects.filter(user_id_id=buddy_id,status='public')
+    total=got_a_buddy.count()
+    if total>0:
+        for i in range(total):
+            buddy_id=got_a_buddy[i].request_from_id
+            view_post=post_tb.objects.filter(user_id_id=my_id,status='public') | post_tb.objects.filter(user_id_id=buddy_id,status='public')            
         return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'see':view_post})
-    else:
+    else:    
         view_post=post_tb.objects.filter(user_id_id=my_id,status='public')
-        return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'see':view_post})
+        return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy})
     
 def my_post(request):
     my_id=request.session['yourself']
@@ -64,11 +66,19 @@ def find_buddy(request):
     
 
 def request_for_friendship(request):
-    user_id=request.session['yourself']
+    my_id=request.session['yourself']
     friend_id=request.POST['friend_id']
-    action=friend_tb(request_from_id=user_id,requested_to=friend_id)
-    action.save()
-    return render(request,'app_buddy/friend_request.html')
+    frnd=friend_tb.objects.filter(request_from_id=my_id,requested_to=friend_id)
+    if int(my_id)==int(friend_id):
+        messages.add_message(request,messages.INFO,"User and Requested ID is the same")
+        return redirect('home')
+    elif frnd.count() > 0:
+        messages.add_message(request,messages.INFO,"This user is already in your friend list.")
+        return redirect('home')
+    else:
+        action=friend_tb(request_from_id=my_id,requested_to=friend_id)
+        action.save()
+        return render(request,'app_buddy/friend_request.html')
 
 def friend_request(request):
     my_id=request.session['yourself']

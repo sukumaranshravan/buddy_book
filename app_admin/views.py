@@ -19,10 +19,13 @@ def log_in(request):
         request.session['yourself']=buddy_check[0].id
         my_id=request.session['yourself']
         got_a_buddy=friend_tb.objects.filter(status=my_id)
-        if got_a_buddy.count()>0:
-            buddy_id=got_a_buddy[0].request_from_id
-            view_post=post_tb.objects.filter(user_id_id=my_id,status='public') | post_tb.objects.filter(user_id_id=buddy_id,status='public')
-            messages.add_message(request,messages.INFO,f'{u_name} logged in Successfully')
+        total=got_a_buddy.count()
+        if total>0:
+            for i in range(total):
+                buddy_id=got_a_buddy[i].request_from_id
+                view_post=post_tb.objects.filter(user_id_id=my_id,status='public') | post_tb.objects.filter(user_id_id=buddy_id,status='public') 
+                # messages.add_message(request,messages.INFO,f'{u_name} logged in Successfully')
+                
             return render(request,'app_buddy/my_wall.html',{'key':u_name,'detail':buddy_check,'see':view_post})
         else:
             view_post=post_tb.objects.filter(user_id_id=my_id,status='public')
