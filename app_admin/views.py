@@ -19,14 +19,13 @@ def log_in(request):
         request.session['yourself']=buddy_check[0].id
         my_id=request.session['yourself']
         got_a_buddy=friend_tb.objects.filter(status=my_id)
-        total=got_a_buddy.count()
         view_post=post_tb.objects.filter()
-        #messages.add_message(request,messages.INFO,f'{u_name} logged in Successfully')    
-        return render(request,'app_buddy/my_wall.html',{'key':u_name,'detail':buddy_check,'see':view_post,'me':my_id,'bud_post':got_a_buddy})
-        # else:
-        #     view_post=post_tb.objects.filter(user_id_id=my_id,status='public')
-        #     messages.add_message(request,messages.INFO,f'{u_name} logged in Successfully')
-        #     return render(request,'app_buddy/my_wall.html',{'key':u_name,'detail':buddy_check,'see':view_post})
+        if got_a_buddy.count()>0:
+            messages.add_message(request,messages.INFO,f'{u_name} logged in Successfully')    
+            return render(request,'app_buddy/my_wall.html',{'key':u_name,'detail':buddy_check,'see':view_post,'me':my_id,'bud_post':got_a_buddy})
+        else:
+            msg='Make friends to see what they posts'            
+            return render(request,'app_buddy/my_wall.html',{'key':u_name,'detail':buddy_check,'alert':msg})
 
 def log_out(request):
     request.session.flush()

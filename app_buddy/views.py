@@ -42,11 +42,13 @@ def home(request):
     buddy=register_tb.objects.filter(id=my_id)
     name=buddy[0].user_name
     got_a_buddy=friend_tb.objects.filter(status=my_id)
-    total=got_a_buddy.count()
-    for i in range(total):
-        buddy_id=got_a_buddy[i].request_from_id
+    if got_a_buddy.count() >0:
         view_post=post_tb.objects.filter() 
         return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'see':view_post,'bud_post':got_a_buddy})  
+    else:
+        msg='Make friends to see what they posts'
+        return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'alert':msg})
+
     
     
 def my_post(request):
@@ -98,6 +100,14 @@ def reject(request,id):
     my_id=request.session['yourself']
     friend_tb.objects.filter(id=id).delete()
     return redirect('home')
+
+def unfriend(request,id):
+    my_id=request.session['yourself']
+    get_buddy=friend_tb.objects.filter(id=id,status=my_id)
+    bud_status_in_my_request=get_buddy[0].request_from_id
+    friend_tb.objects.filter(id=id,status=my_id).delete()
+    friend_tb.objects.filter(request_from_id=my_id,status=bud_status_in_my_request).delete()
+    return redirect('friend_list')
 
 def comment(request):
     my_id=request.session['yourself']

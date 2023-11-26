@@ -43,6 +43,10 @@
                             <th>Address</th>
                             <td class="form-control">{{i.request_from.address}}</td>
                         </tr>
+                        <tr>
+                            <th></th>
+                            <td><a href="{% url 'unfriend' i.id %}">Unfriend</a></td>
+                        </tr>
                      </table>                                  
                     {% endfor %}  
                                       
