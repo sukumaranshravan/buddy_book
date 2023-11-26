@@ -43,14 +43,11 @@ def home(request):
     name=buddy[0].user_name
     got_a_buddy=friend_tb.objects.filter(status=my_id)
     total=got_a_buddy.count()
-    if total>0:
-        for i in range(total):
-            buddy_id=got_a_buddy[i].request_from_id
-            view_post=post_tb.objects.filter(user_id_id=my_id,status='public') | post_tb.objects.filter(user_id_id=buddy_id,status='public')            
-        return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'see':view_post})
-    else:    
-        view_post=post_tb.objects.filter(user_id_id=my_id,status='public')
-        return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy})
+    for i in range(total):
+        buddy_id=got_a_buddy[i].request_from_id
+        view_post=post_tb.objects.filter() 
+        return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'see':view_post,'bud_post':got_a_buddy})  
+    
     
 def my_post(request):
     my_id=request.session['yourself']

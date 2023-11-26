@@ -39,16 +39,22 @@
                     <br>
                 </div>
                 <div>
-                    {% for i in see %}                
-                   <p><b><img src="{{i.user_id.photo.url}}" alt="No Image" height="50px" width="50px">{{i.user_id.first_name}}&nbsp;{{i.user_id.last_name}}</b>&nbsp;&nbsp;Has posted {{i.date}}</p>
-                    <p><b>{{i.title}}</b></p>
-                    <p><img src="{{i.image.url}}" alt="" height="300" width="450"></p>
-                    <p><em>{{i.post}}</em></p>
+                    {% for j in see %}
+                    {% for i in bud_post %} 
+                    {% if i.request_from.id == j.user_id_id  %}
+                   <p><b><img src="{{i.request_from.photo.url}}" alt="No Image" height="50px" width="50px">{{i.request_from.first_name}}&nbsp;{{i.request_from.last_name}}</b>&nbsp;&nbsp;Has posted {{j.date}}</p>
+                    
+                  
+                    <p><b>{{j.title}}</b></p>
+                    <p><img src="{{j.image.url}}" alt="" height="300" width="450"></p>
+                    <p><em>{{j.post}}</em></p>
                     
                     <input type="text" name="comment" class="form-control">
                     <input type="submit" value="add your comment">
                     <input type="text" name="reply" class="form-control">
-                    <input type="submit" value="reply">                    
+                    <input type="submit" value="reply"> 
+                    {% endif %}
+                    {% endfor %}
                     {% endfor %}
                     <br>
                 </div>

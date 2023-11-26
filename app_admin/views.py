@@ -20,17 +20,13 @@ def log_in(request):
         my_id=request.session['yourself']
         got_a_buddy=friend_tb.objects.filter(status=my_id)
         total=got_a_buddy.count()
-        if total>0:
-            for i in range(total):
-                buddy_id=got_a_buddy[i].request_from_id
-                view_post=post_tb.objects.filter(user_id_id=my_id,status='public') | post_tb.objects.filter(user_id_id=buddy_id,status='public') 
-                # messages.add_message(request,messages.INFO,f'{u_name} logged in Successfully')
-                
-            return render(request,'app_buddy/my_wall.html',{'key':u_name,'detail':buddy_check,'see':view_post})
-        else:
-            view_post=post_tb.objects.filter(user_id_id=my_id,status='public')
-            messages.add_message(request,messages.INFO,f'{u_name} logged in Successfully')
-            return render(request,'app_buddy/my_wall.html',{'key':u_name,'detail':buddy_check,'see':view_post})
+        view_post=post_tb.objects.filter()
+        #messages.add_message(request,messages.INFO,f'{u_name} logged in Successfully')    
+        return render(request,'app_buddy/my_wall.html',{'key':u_name,'detail':buddy_check,'see':view_post,'me':my_id,'bud_post':got_a_buddy})
+        # else:
+        #     view_post=post_tb.objects.filter(user_id_id=my_id,status='public')
+        #     messages.add_message(request,messages.INFO,f'{u_name} logged in Successfully')
+        #     return render(request,'app_buddy/my_wall.html',{'key':u_name,'detail':buddy_check,'see':view_post})
 
 def log_out(request):
     request.session.flush()
