@@ -18,4 +18,5 @@ urlpatterns = [
     path('friend_list/',views.friend_list,name='friend_list'),
     path('about_me/',views.about_me,name='about_me'),
     path('unfriend<int:id>/',views.unfriend,name='unfriend'),
+    path('my_photos/',views.my_photos,name='my_photos'),
 ]

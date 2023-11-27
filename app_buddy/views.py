@@ -124,13 +124,20 @@ def commentaction(request):
     return redirect('home')
 
 def reply(request,id):
-    my_id=request.session['yourself']
-    return render(request,'app_buddy/reply.html')
+    post=post_tb.objects.filter(id=id)
+    return render(request,'app_buddy/comment.html',{'say':post})
 
 def friend_list(request):
     my_id=request.session['yourself']
     my_friends=friend_tb.objects.filter(status=my_id)
     return render(request,'app_buddy/friend_list.html',{'key':my_friends})
+
+
+def my_photos(request):
+    my_id=request.session['yourself']
+    pic=register_tb.objects.filter(id=my_id)
+    view_post=post_tb.objects.filter(user_id_id=my_id)
+    return render(request,'app_buddy/my_photos.html',{'see':view_post,'pro_pic':pic})
 
 def about_me(request):
     return render(request,'app_buddy/about_me.html')
