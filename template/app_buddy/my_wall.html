@@ -36,7 +36,7 @@
             <div class="col-9 border">
                 <div>
                     <a href="{% url 'post' %}">Post Something.</a>
-                    <br>
+                    <br>                    
                 </div>
                 <div>
                     {% if bud_post == null %}
@@ -46,21 +46,22 @@
                     {% for j in see %}
                     {% for i in bud_post %} 
                         {% if i.request_from.id == j.user_id_id  %}
-                   <p><b><img src="{{i.request_from.photo.url}}" alt="No Image" height="50px" width="50px">{{i.request_from.first_name}}&nbsp;{{i.request_from.last_name}}</b>&nbsp;&nbsp;Has posted {{j.date}}</p>                                      
+                    <p><b><img src="{{i.request_from.photo.url}}" alt="No Image" height="50px" width="50px">{{i.request_from.first_name}}&nbsp;{{i.request_from.last_name}}</b>&nbsp;&nbsp;Has posted {{j.date}}</p>                                      
                     <p><b>{{j.title}}</b></p>
                     <p><img src="{{j.image.url}}" alt="" height="300" width="450"></p>
                     <p><em>{{j.post}}</em></p>
-                    
-                    <input type="text" name="comment" class="form-control">
-                    <input type="submit" value="add your comment">
-                    <input type="text" name="reply" class="form-control">
-                    <input type="submit" value="reply">
+                    <p><a href="{% url 'comment' j.id %}">Comment</a>&nbsp;&nbsp;&nbsp;</p>
+                      {% for k in comment %}  
+                      {% if j.id == k.post_id_id %}         
+                    <p><b style="color: blue;">{{k.user_id.user_name}} :</b><em style="color: rgb(12, 12, 12);" class="form-control">{{k.comment}}</em></p>
+                      {% endif %}
+                      {% endfor %}
                     {% endif %}
                     {% endfor %}
                     {% endfor %}
                     {% endif %}
                     <br>
-                </div>
+                </div> 
             </div>
         </div>
     </div>

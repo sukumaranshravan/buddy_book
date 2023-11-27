@@ -30,10 +30,11 @@ class friend_tb(models.Model):
     status=models.CharField(max_length=20,default='pending')
 
 class comment_tb(models.Model):
-    commenter_id=models.ForeignKey(register_tb,on_delete=models.CASCADE)
-    user_id=models.CharField(max_length=20)
+    user_id=models.ForeignKey(register_tb,on_delete=models.CASCADE)
     comment=models.CharField(max_length=20)
+    post_id=models.ForeignKey(post_tb,on_delete=models.CASCADE,default=0)
 
 class reply_tb(models.Model):
     user_id=models.ForeignKey(register_tb,on_delete=models.CASCADE)
     reply=models.CharField(max_length=20)
+    post_id=models.ForeignKey(comment_tb,on_delete=models.CASCADE,default=0)

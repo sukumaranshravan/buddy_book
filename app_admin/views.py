@@ -20,9 +20,10 @@ def log_in(request):
         my_id=request.session['yourself']
         got_a_buddy=friend_tb.objects.filter(status=my_id)
         view_post=post_tb.objects.filter()
+        view_comment=comment_tb.objects.filter()
         if got_a_buddy.count()>0:
             messages.add_message(request,messages.INFO,f'{u_name} logged in Successfully')    
-            return render(request,'app_buddy/my_wall.html',{'key':u_name,'detail':buddy_check,'see':view_post,'me':my_id,'bud_post':got_a_buddy})
+            return render(request,'app_buddy/my_wall.html',{'key':u_name,'detail':buddy_check,'see':view_post,'me':my_id,'bud_post':got_a_buddy,'comment':view_comment})
         else:
             msg='Make friends to see what they posts'            
             return render(request,'app_buddy/my_wall.html',{'key':u_name,'detail':buddy_check,'alert':msg})

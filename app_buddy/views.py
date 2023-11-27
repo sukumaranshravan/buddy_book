@@ -42,9 +42,10 @@ def home(request):
     buddy=register_tb.objects.filter(id=my_id)
     name=buddy[0].user_name
     got_a_buddy=friend_tb.objects.filter(status=my_id)
+    view_comment=comment_tb.objects.filter()
     if got_a_buddy.count() >0:
         view_post=post_tb.objects.filter() 
-        return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'see':view_post,'bud_post':got_a_buddy})  
+        return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'see':view_post,'bud_post':got_a_buddy,'comment':view_comment})  
     else:
         msg='Make friends to see what they posts'
         return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'alert':msg})
@@ -109,12 +110,21 @@ def unfriend(request,id):
     friend_tb.objects.filter(request_from_id=my_id,status=bud_status_in_my_request).delete()
     return redirect('friend_list')
 
-def comment(request):
+def comment(request,id):
     my_id=request.session['yourself']
-    return
-def reply(request):
+    post=post_tb.objects.filter(id=id)
+    return render(request,'app_buddy/comment.html',{'say':post})
+def commentaction(request):
     my_id=request.session['yourself']
-    return
+    comment=request.POST['comment']
+    post_id=request.POST['id']
+    comment=comment_tb(comment=comment,post_id_id=post_id,user_id_id=my_id)
+    comment.save()
+    return redirect('home')
+
+def reply(request,id):
+    my_id=request.session['yourself']
+    return render(request,'app_buddy/reply.html')
 
 def friend_list(request):
     my_id=request.session['yourself']
