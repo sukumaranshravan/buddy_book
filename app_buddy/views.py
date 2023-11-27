@@ -57,7 +57,8 @@ def my_post(request):
     buddy=register_tb.objects.filter(id=my_id)
     name=buddy[0].user_name
     view_post=post_tb.objects.filter(user_id_id=my_id)
-    return render(request,'app_buddy/my_posts.html',{'key':name,'detail':buddy,'see':view_post})
+    view_comment=comment_tb.objects.filter()
+    return render(request,'app_buddy/my_posts.html',{'key':name,'detail':buddy,'see':view_post,'comment':view_comment})
 
 def find_buddy(request):
     search_word=request.POST['entry']

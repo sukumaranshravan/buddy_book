@@ -27,10 +27,20 @@
                 {% for i in see %}
                 <b>{{i.title}}</b><img src="{{i.image.url}}" alt="" height="300" width="400">
                 <p><em>{{i.post}}</em></p>
+                {% for k in comment %}  
+                {% if i.id == k.post_id_id %}         
+                <p><b style="color: blue;">{{k.user_id.user_name}} :</b><em style="color: rgb(12, 12, 12);" class="form-control">{{k.comment}}<a href="{% url 'reply' k.id %}">Reply</a></em></p>
+                
+                {% endif %}
+                {% endfor %}
                 {% endfor %}
             </div>
-            <a href="{% url 'reply' j.id %}">Reply</a></p> 
+           
           </div>
+          <div>
+            
+          </div>
+           
       </div>
   </div>
   {% if messages  %}
