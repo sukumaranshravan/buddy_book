@@ -19,7 +19,7 @@ def log_in(request):
         request.session['yourself']=buddy_check[0].id
         my_id=request.session['yourself']
         got_a_buddy=friend_tb.objects.filter(status=my_id)
-        view_post=post_tb.objects.filter()
+        view_post=post_tb.objects.filter().order_by('-date')
         view_comment=comment_tb.objects.filter()
         if got_a_buddy.count()>0:
             messages.add_message(request,messages.INFO,f'{u_name} logged in Successfully')    

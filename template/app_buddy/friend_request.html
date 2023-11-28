@@ -15,11 +15,12 @@
       <div class="row">            
           <div class="col-4 border">
               <ul>
-                  <li><a href="{% url 'home' %}">Home</a></li>
-                  <li>My Friends</li>
-                  <li>My Photos</li>
-                  <li>Basic Information</li>
-                  <li>Settings</li>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li>Friend Requests</li>
+                <li><a href="{% url 'friend_list' %}">My Friends</a></li>
+                <li><a href="{% url 'my_photos' %}">My Photos</a></li>
+                <li><a href="{% url 'about_me' %}">About Me</a></li>
+                <li>Settings</li>
               </ul>
           </div>
           <div class="col-8 border">

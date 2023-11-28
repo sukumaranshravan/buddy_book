@@ -13,53 +13,36 @@
           <img src="/media/buddy_book_Logo.png" alt="" height="100" width="100" class="bg-white"><h5 style="color:white;">buddybook</h5>&nbsp;&nbsp;&nbsp;&nbsp;<h6 class="align-content-end"></h6><h6>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'log_out' %}" class="text-white">Sign Out?</a></h6>
       </div>
       <div class="row">            
-          <div class="col-4 border">
+          <div class="col-3 border">
               <ul>
-                  <li><a href="{% url 'home' %}">Home</a></li>
-                  <li><a href="{% url 'friend_request' %}">Friend Requests</a></li>
-                  <li><a href="{% url 'friend_list' %}">My Friends</a></li>
-                  <li>My Photos</li>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'my_post' %}">My Posts</a></li>
+                <li><a href="{% url 'friend_request' %}">Friend Requests</a></li>
+                <li><a href="{% url 'friend_list' %}">My Friends</a></li>
+                <li><a href="{% url 'my_photos' %}">My Photos</a></li>
                   <li>About Me</li>
                   <li>Settings</li>
               </ul>
           </div>
+          
+
           <div class="col-8 border">
-                <div class="col-6">
-                    {% for i in key %}
-                     <table>
-                        <form action="{% url 'request_for_friendship' %}" method="post">
-                            {% csrf_token %}
-                        <tr>
-                            <th>Name</th>
-                            <td class="form-control"><div class="col-2">                                
-                                <img src="{{i.photo.url}}" alt="No picture" height="100px" width="100px">                              
-                            </div>{{i.first_name}}&nbsp;{{i.last_name}}</td>                        
-                        </tr>
-                        <tr>                            
-                           <td><input type="hidden" name="friend_id" value="{{i.id}}"></td>                          
-                        </tr>
-                        <tr>
-                            <th>Gender</th>
-                            <td class="form-control">{{i.gender}}</td>                                  
-                        </tr>
-                        <tr>
-                            <th>Address</th>
-                            <td class="form-control">{{i.address}}</td>
-                        </tr>
-                        <tr>
-                            <th></th>                            
-                            <td><input type="submit" value="Friend Request" class="btn btn-primary"></td>                            
-                        </tr>
-                        </form>
-                     </table>                                  
-                    {% endfor %}  
-                                      
-                </div>  
-                               
+            {% for i in key %}
+            <div class="col-2" style="align-items: end;">
+                <img src="{{i.photo.url}}" alt="" height="200px" width="200px">
             </div>
-                   
-      </div>
-      
+                <div class="col-6">
+                     <input type="text" name="name" value="{{i.first_name}}"value=" {{i.last_name}}" class="form-control"> 
+                     <input type="text" name="gender" value="{{i.gender}}" class="form-control">
+                     <input type="text" name="dob" class="form-control" value="{{i.dob}}">    
+                     <input type="text" name="email" class="form-control" value="{{i.email}}">                                 
+                     <input type="text" name="phone" class="form-control" value="{{i.phone}}">
+                     <textarea name="address" class="form-control" cols="20" rows="5">{{i.address}}</textarea>
+                </div>  
+                 
+            {% endfor %}                            
+            </div>
+        </div>
   </div>
   {% if messages  %}
           {% for msg in messages %}

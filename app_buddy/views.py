@@ -44,7 +44,7 @@ def home(request):
     got_a_buddy=friend_tb.objects.filter(status=my_id)
     view_comment=comment_tb.objects.filter()
     if got_a_buddy.count() >0:
-        view_post=post_tb.objects.filter() 
+        view_post=post_tb.objects.filter().order_by('-date') 
         return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'see':view_post,'bud_post':got_a_buddy,'comment':view_comment})  
     else:
         msg='Make friends to see what they posts'
@@ -60,12 +60,18 @@ def my_post(request):
     view_comment=comment_tb.objects.filter()
     return render(request,'app_buddy/my_posts.html',{'key':name,'detail':buddy,'see':view_post,'comment':view_comment})
 
+def delete_post(request,id):    
+    post_tb.objects.filter(id=id).delete()
+    comment_tb.objects.filter(post_id_id=id).delete()
+    messages.add_message(request,messages.INFO,"Selected Post and all comments associated with it has been deleted.")
+    return redirect('my_post')
+
+
 def find_buddy(request):
     search_word=request.POST['entry']
     buddies=register_tb.objects.filter(first_name__istartswith=search_word) | register_tb.objects.filter(user_name__istartswith=search_word)
     return render(request,'app_buddy/buddies.html',{'key':buddies})
     
-
 def request_for_friendship(request):
     my_id=request.session['yourself']
     friend_id=request.POST['friend_id']
@@ -132,7 +138,6 @@ def friend_list(request):
     my_friends=friend_tb.objects.filter(status=my_id)
     return render(request,'app_buddy/friend_list.html',{'key':my_friends})
 
-
 def my_photos(request):
     my_id=request.session['yourself']
     pic=register_tb.objects.filter(id=my_id)
@@ -140,4 +145,11 @@ def my_photos(request):
     return render(request,'app_buddy/my_photos.html',{'see':view_post,'pro_pic':pic})
 
 def about_me(request):
-    return render(request,'app_buddy/about_me.html')
+    my_id=request.session['yourself']
+    my_details=register_tb.objects.filter(id=my_id)
+    return render(request,'app_buddy/about_me.html',{'key':my_details})
+
+def settings(request):
+    my_id=request.session['yourself']
+    my_details=register_tb.objects.filter(id=my_id)
+    return render(request,'app_buddy/settings.html',{'key':my_details})

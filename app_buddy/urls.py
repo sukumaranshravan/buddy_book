@@ -19,4 +19,6 @@ urlpatterns = [
     path('about_me/',views.about_me,name='about_me'),
     path('unfriend<int:id>/',views.unfriend,name='unfriend'),
     path('my_photos/',views.my_photos,name='my_photos'),
+    path('settings/',views.settings,name='settings'),
+    path('delete_post<int:id>/',views.delete_post,name='delete_post'),
 ]
