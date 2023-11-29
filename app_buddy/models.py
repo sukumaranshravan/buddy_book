@@ -38,3 +38,7 @@ class reply_tb(models.Model):
     user_id=models.ForeignKey(register_tb,on_delete=models.CASCADE)
     reply=models.CharField(max_length=20)
     post_id=models.ForeignKey(comment_tb,on_delete=models.CASCADE,default=0)
+
+class likes_tb(models.Model):
+    post_id=models.ForeignKey(post_tb,on_delete=models.CASCADE)
+    like_count=models.IntegerField(default=0)

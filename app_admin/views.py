@@ -21,9 +21,12 @@ def log_in(request):
         got_a_buddy=friend_tb.objects.filter(status=my_id)
         view_post=post_tb.objects.filter().order_by('-date')
         view_comment=comment_tb.objects.filter()
+        likes=likes_tb.objects.all()
+        # dislikes=likes_tb.objects.filter(like_count=-1)
+        # dislike=dislikes.count()
         if got_a_buddy.count()>0:
             messages.add_message(request,messages.INFO,f'{u_name} logged in Successfully')    
-            return render(request,'app_buddy/my_wall.html',{'key':u_name,'detail':buddy_check,'see':view_post,'me':my_id,'bud_post':got_a_buddy,'comment':view_comment})
+            return render(request,'app_buddy/my_wall.html',{'key':u_name,'detail':buddy_check,'see':view_post,'me':my_id,'bud_post':got_a_buddy,'comment':view_comment,'lk':likes})
         else:
             msg='Make friends to see what they posts'            
             return render(request,'app_buddy/my_wall.html',{'key':u_name,'detail':buddy_check,'alert':msg})

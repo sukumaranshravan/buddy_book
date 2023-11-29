@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings</title>
+  <link rel="stylesheet" href="/static/bootstrap-5.3.2-dist/css/bootstrap.css">
+  <script src="/static/bootstrap-5.3.2-dist/js/bootstrap.js"></script>
+</head>
+<body style="background-color:rgb(241, 244, 246);">
+  <div class="container bg-white">
+      <div class="navbar navbar-expand-lg bg-primary">
+          <img src="/media/buddy_book_Logo.png" alt="" height="100" width="100" class="bg-white"><h5 style="color:white;">buddybook</h5>&nbsp;&nbsp;&nbsp;&nbsp;<h6 class="align-content-end"><em>Logged In User : </em><b class="text-white">My Settings</b></h6><h6>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'log_out' %}" class="text-white">Sign Out?</a></h6>
+      </div>
+      <div class="row">            
+          <div class="col-4 border">
+              <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'friend_request' %}">Friend Requests</a></li>
+                <li><a href="{% url 'friend_list' %}">My Friends</a></li>
+                <li><a href="{% url 'my_photos' %}">My Photos</a></li>
+                <li><a href="{% url 'about_me' %}">About Me</a></li>
+                <li>Settings</li>
+              </ul>
+          </div>
+          <div class="col-8 border">
+            <div class="col-6">
+                {% for i in key %}
+                <img src="{{i.photo.url}}" alt="" height="350px" width="300px"></li>
+                {% endfor %}
+                <form action="{% url 'change_photo' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <h6 style="color: blue;">Change Profile Picture</h6>
+                <p><input type="file" name="photo" class="form-control"></p>
+                <p><input type="submit" value="Change" class="btn btn-outline-success"></p>
+                </form>
+            </div>  
+                         
+          </div>
+  </div>
+  {% if messages  %}
+          {% for msg in messages %}
+          <script>
+              alert("{{msg}}")
+          </script>
+          {% endfor %}
+          {% endif %}
+</body>
+</html>

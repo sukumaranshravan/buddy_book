@@ -43,9 +43,10 @@ def home(request):
     name=buddy[0].user_name
     got_a_buddy=friend_tb.objects.filter(status=my_id)
     view_comment=comment_tb.objects.filter()
+    likes=likes_tb.objects.all()
     if got_a_buddy.count() >0:
         view_post=post_tb.objects.filter().order_by('-date') 
-        return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'see':view_post,'bud_post':got_a_buddy,'comment':view_comment})  
+        return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'see':view_post,'bud_post':got_a_buddy,'comment':view_comment,'lk':likes})  
     else:
         msg='Make friends to see what they posts'
         return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'alert':msg})
@@ -153,3 +154,44 @@ def settings(request):
     my_id=request.session['yourself']
     my_details=register_tb.objects.filter(id=my_id)
     return render(request,'app_buddy/settings.html',{'key':my_details})
+def change_photo(request):
+    my_id=request.session['yourself']
+    new_pic=request.FILES['photo']
+    register_tb.objects.filter(id=my_id).update(photo=new_pic)
+    messages.add_message(request,messages.INFO,'Profile Picture has been changed.')
+    # following code is only to let your buddies know about your new photo
+    date=datetime.date.today()
+    time=datetime.datetime.now().strftime('%H:%M')
+    title='Profile Picture Updated'
+    post='see my new profile picture'    
+    my_pic_change=post_tb(title=title,post=post,time=time,date=date,image=new_pic,user_id_id=my_id)
+    my_pic_change.save()
+    return redirect('settings')
+
+def likes(request,id):
+    post=post_tb.objects.filter(id=id)
+    post_id=post[0].id 
+    count_me=likes_tb.objects.filter(post_id_id=post_id)
+    if count_me.count()>0:
+        like_post=likes_tb.objects.filter(post_id_id=post_id)
+        like_count=like_post[0].like_count
+        likes_tb.objects.filter(post_id_id=post_id).update(like_count=like_count+1)
+        return redirect('home')  
+    else:        
+        my_like=likes_tb(post_id_id=post_id,like_count=1)
+        my_like.save() 
+        return redirect('home')
+# def unlike(request,id):
+#     my_id=request.session['yourself']
+#     post=post_tb.objects.filter(id=id)
+#     post_id=post[0].id 
+#     count_me=likes_tb.objects.filter(user_id_id=my_id)
+#     if count_me.count()==0:
+#         like-=1
+#         my_like=likes_tb(user_id_id=my_id,post_id_id=post_id,like_count=like)
+#         my_like.save()
+#         return redirect('home')
+#     elif count_me.count()>0:
+#         like-=1
+#         likes_tb.objects.filter(user_id_id=my_id).update(like_count=like)
+#         return redirect('home')

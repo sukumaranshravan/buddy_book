@@ -32,7 +32,7 @@
                 <p> <a href="{% url 'reply' i.id %}">Reply</a>&nbsp;&nbsp;<a href="{% url 'delete_post' i.id %}" class="text-danger">Delete Post</a></p>
                 {% for k in comment %}  
                 {% if i.id == k.post_id_id %}         
-                <p class="col-8"><b style="color: blue;">{{k.user_id.user_name}} :</b><em style="color: rgb(12, 12, 12);" class="form-control">{{k.comment}}</em></p>
+                <p class="col-8"><b style="color: blue;"><img src="{{k.user_id.photo.url}}" height="30px" width="30px" alt="">{{k.user_id.user_name}} :</b><em style="color: rgb(12, 12, 12);" class="form-control">{{k.comment}}</em></p>
                                   
                 {% endif %}
                 {% endfor %}
