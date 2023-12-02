@@ -50,7 +50,7 @@
                     <p><b>{{j.title}}</b></p>
                     <p><img src="{{j.image.url}}" alt="" height="300" width="450"></p>
                     <p><em>{{j.post}}</em></p>
-                    <p><a href="{% url 'likes' j.id %}"><img src="/media/like_button.png" alt="" height="20px" width="25px"></a><b style="color: blue;">{% for x in lk %} {% if x.post_id_id == j.id %}  {{x.like_count}} {% endif %} {% endfor %} &nbsp;</b>likes&nbsp;&nbsp;&nbsp;<a href="{% url 'comment' j.id %}">Comment</a></p>
+                    <p><a href="{% url 'likes' j.id %}"><img src="/media/like.png" alt="" height="25px" width="25px"></a><b style="color: blue;">{{j.likes}}&nbsp;</b>likes&nbsp;&nbsp;&nbsp;<img src="/media/dislike.png" alt="" height="20x" width="20px"></a> &nbsp;dislikes&nbsp;&nbsp;&nbsp;<a href="{% url 'comment' j.id %}">Comment</a></p>
                       {% for k in comment %}  
                       {% if j.id == k.post_id_id %}         
                     <p class="col-8"><b style="color: blue;"><img src="{{k.user_id.photo.url}}" height="30px" width="30px" alt="">{{k.user_id.user_name}} :</b><em style="color: rgb(12, 12, 12);" class="form-control">{{k.comment}}</em></p>

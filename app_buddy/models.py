@@ -22,6 +22,8 @@ class post_tb(models.Model):
     image=models.FileField(default=None)
     status=models.CharField(max_length=20,default='public')
     filter_status=models.CharField(max_length=20,default='unblocked')
+    likes=models.PositiveIntegerField(default=0)
+    dislikes=models.PositiveIntegerField(default=0)
 
 
 class friend_tb(models.Model):
@@ -39,6 +41,6 @@ class reply_tb(models.Model):
     reply=models.CharField(max_length=20)
     post_id=models.ForeignKey(comment_tb,on_delete=models.CASCADE,default=0)
 
-class likes_tb(models.Model):
+class liked_by_tb(models.Model):
+    user_id=models.ForeignKey(register_tb,on_delete=models.CASCADE)
     post_id=models.ForeignKey(post_tb,on_delete=models.CASCADE)
-    like_count=models.IntegerField(default=0)
