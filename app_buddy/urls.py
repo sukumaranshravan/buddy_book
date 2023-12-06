@@ -23,4 +23,9 @@ urlpatterns = [
     path('change_photo/',views.change_photo,name='change_photo'),
     path('delete_post<int:id>/',views.delete_post,name='delete_post'),
     path('likes<int:id>/',views.likes,name='likes'),
+    path('likers<int:id>/',views.likers,name='likers'),
+    path('buddy/',views.buddy,name='buddy'),
+    path('notifications<int:id>/',views.notifications,name='notifications'),
+    path('edit_comment<int:id>/',views.edit_comment,name='edit_comment'),
+    path('update_comment/',views.update_comment,name='update_comment'),
 ]

@@ -50,10 +50,11 @@
                     <p><b>{{j.title}}</b></p>
                     <p><img src="{{j.image.url}}" alt="" height="300" width="450"></p>
                     <p><em>{{j.post}}</em></p>
-                    <p><a href="{% url 'likes' j.id %}"><img src="/media/like.png" alt="" height="25px" width="25px"></a><b style="color: blue;">{{j.likes}}&nbsp;</b>likes&nbsp;&nbsp;&nbsp;<img src="/media/dislike.png" alt="" height="20x" width="20px"></a> &nbsp;dislikes&nbsp;&nbsp;&nbsp;<a href="{% url 'comment' j.id %}">Comment</a></p>
-                      {% for k in comment %}  
+                    <p><a href="{% url 'likes' j.id %}"><img src="/media/like.png" alt="" height="25px" width="25px"></a><b style="color: blue;">{{j.likes}}&nbsp;</b>likes&nbsp;<a href="{% url 'likers' j.id %}">Liked by</a>&nbsp;&nbsp;<img src="/media/dislike.png" alt="" height="20x" width="20px"></a> &nbsp;dislikes&nbsp;&nbsp;&nbsp;<a href="{% url 'comment' j.id %}">Comment</a></p>                    
+                    <!-- (actually there is an if condition in the code below after {{k.comment}} for edit comment and delete comment to make changes or delete comment for a particular user, so that only that user can make change, for that I have used the {{key}} of logged in user_name, thats is why there is a 'key' in if condition ) -->
+                    {% for k in comment %}  
                       {% if j.id == k.post_id_id %}         
-                    <p class="col-8"><b style="color: blue;"><img src="{{k.user_id.photo.url}}" height="30px" width="30px" alt="">{{k.user_id.user_name}} :</b><em style="color: rgb(12, 12, 12);" class="form-control">{{k.comment}}</em></p>
+                    <p class="col-8"><b style="color: blue;"><img src="{{k.user_id.photo.url}}" height="30px" width="30px" alt="">{{k.user_id.user_name}} :</b><em style="color: rgb(12, 12, 12);" class="form-control">{{k.comment}}&nbsp;&nbsp;{% if k.user_id.user_name == key %}<a href="{% url 'edit_comment' k.id %}" class="text-success">Edit</a>&nbsp;&nbsp;<a href="{'#'}" class="text-danger">Delete</a>{% endif %}</em></p>
                       {% endif %}
                       {% endfor %}
                     {% endif %}

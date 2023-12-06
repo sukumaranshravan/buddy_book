@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from .models import *
 from django.contrib import messages
 import datetime
+from django.http import HttpResponse
 # Create your views here.
 def registeraction(request):
     f_name=request.POST['first_name']
@@ -48,17 +49,17 @@ def home(request):
         return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'see':view_post,'bud_post':got_a_buddy,'comment':view_comment})  
     else:
         msg='Make friends to see what they posts'
-        return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'alert':msg})
-
-    
+        return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'alert':msg})  
     
 def my_post(request):
     my_id=request.session['yourself']
     buddy=register_tb.objects.filter(id=my_id)
     name=buddy[0].user_name
     view_post=post_tb.objects.filter(user_id_id=my_id)
+    post_id=view_post[0].id
+    liked_users=liked_by_tb.objects.filter(post_id_id=post_id)
     view_comment=comment_tb.objects.filter()
-    return render(request,'app_buddy/my_posts.html',{'key':name,'detail':buddy,'see':view_post,'comment':view_comment})
+    return render(request,'app_buddy/my_posts.html',{'key':name,'detail':buddy,'see':view_post,'comment':view_comment,'likers':liked_users})
 
 def delete_post(request,id):    
     post_tb.objects.filter(id=id).delete()
@@ -127,6 +128,8 @@ def commentaction(request):
     post_id=request.POST['id']
     comment=comment_tb(comment=comment,post_id_id=post_id,user_id_id=my_id)
     comment.save()
+    notify=notify=notifications_tb(post_id_id=post_id,user_id_id=my_id,comment='commented')
+    notify.save()
     return redirect('home')
 
 def reply(request,id):
@@ -177,11 +180,48 @@ def likes(request,id):
         post_likes=post_tb.objects.filter(id=id)
         like_count=post_likes[0].likes
         post_tb.objects.filter(id=id).update(likes=like_count+1)
+        notify=notifications_tb(post_id_id=id,user_id_id=my_id,like='liked')
+        notify.save()
         return redirect('home')
     elif check_my_like.count()>0:
         liked_by_tb.objects.filter(user_id_id=my_id,post_id_id=id).delete()
+        notifications_tb.objects.filter(user_id_id=my_id,post_id_id=id).delete()
         post_likes=post_tb.objects.filter(id=id)
         like_count=post_likes[0].likes
         post_tb.objects.filter(id=id).update(likes=like_count-1)
         return redirect('home')
     
+def likers(request,id):
+    post=post_tb.objects.filter(id=id)
+    user=register_tb.objects.filter(id=id)
+    post_id=post[0].id
+    liker=liked_by_tb.objects.filter(post_id_id=post_id)
+    return render(request,'app_buddy/liked_by.html',{'key':liker,'buddy':user})
+
+def buddy(request):
+    search_word=request.POST['this']
+    buddy_details=register_tb.objects.filter(first_name__istartswith=search_word) | register_tb.objects.filter(user_name__istartswith=search_word)
+    return render(request,'app_buddy/buddies.html',{'key':buddy_details})
+
+def notifications(request,id):
+    notify=notifications_tb.objects.filter(post_id_id=id).order_by('-id')
+    msg="You have No Notifications"
+    if notify.count()>0:
+        return render(request,'app_buddy/notifications.html',{'ntfy':notify})
+    else:
+        return render(request,'app_buddy/notifications.html',{'show':msg})
+    
+def edit_comment(request,id):
+    my_id=request.session['yourself']
+    comment=comment_tb.objects.filter(user_id_id=my_id,id=id)
+    return render(request,'app_buddy/edit_comment.html',{'key':comment})
+
+def update_comment(request):
+    cmnt_id=request.POST['id']
+    updated_comment=request.POST['comment']
+    try:
+        comment_tb.objects.filter(id=cmnt_id).update(comment=updated_comment)
+        return redirect('home')
+    except:
+        messages.add_message(request,messages.INFO,"No Changes Made")
+        return redirect('home')

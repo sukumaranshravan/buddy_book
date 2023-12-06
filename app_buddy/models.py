@@ -44,3 +44,11 @@ class reply_tb(models.Model):
 class liked_by_tb(models.Model):
     user_id=models.ForeignKey(register_tb,on_delete=models.CASCADE)
     post_id=models.ForeignKey(post_tb,on_delete=models.CASCADE)
+
+class notifications_tb(models.Model):
+    user_id=models.ForeignKey(register_tb,on_delete=models.CASCADE)
+    post_id=models.ForeignKey(post_tb,on_delete=models.CASCADE)
+    comment=models.CharField(max_length=20,default=0)
+    like=models.CharField(max_length=20,default=0)
+    
+    
