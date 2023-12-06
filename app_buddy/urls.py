@@ -25,7 +25,8 @@ urlpatterns = [
     path('likes<int:id>/',views.likes,name='likes'),
     path('likers<int:id>/',views.likers,name='likers'),
     path('buddy/',views.buddy,name='buddy'),
-    path('notifications<int:id>/',views.notifications,name='notifications'),
+    path('notifications/',views.notifications,name='notifications'),
     path('edit_comment<int:id>/',views.edit_comment,name='edit_comment'),
     path('update_comment/',views.update_comment,name='update_comment'),
+    path('view_notification<int:id>/',views.view_notification,name='view_notification'),
 ]

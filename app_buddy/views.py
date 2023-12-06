@@ -203,14 +203,25 @@ def buddy(request):
     buddy_details=register_tb.objects.filter(first_name__istartswith=search_word) | register_tb.objects.filter(user_name__istartswith=search_word)
     return render(request,'app_buddy/buddies.html',{'key':buddy_details})
 
-def notifications(request,id):
-    notify=notifications_tb.objects.filter(post_id_id=id).order_by('-id')
+def notifications(request):
+    my_id=request.session['yourself']
+    buddy=register_tb.objects.filter(id=my_id)
+    name=buddy[0].user_name
+    notify=notifications_tb.objects.filter(remarks='unseen').order_by('-id').exclude(user_id_id=my_id)
+    see=post_tb.objects.filter()
     msg="You have No Notifications"
     if notify.count()>0:
-        return render(request,'app_buddy/notifications.html',{'ntfy':notify})
+        return render(request,'app_buddy/notifications.html',{'ntfy':notify,'cat':see,'key':name})
     else:
         return render(request,'app_buddy/notifications.html',{'show':msg})
-    
+
+def view_notification(request,id):
+    see=post_tb.objects.filter(id=id)
+    post_id=see[0].id
+    view_comment=comment_tb.objects.filter()
+    notifications_tb.objects.filter(post_id_id=post_id).update(remarks='seen')
+    return render(request,'app_buddy/view_notification.html',{'cat':see,'comment':view_comment})  
+  
 def edit_comment(request,id):
     my_id=request.session['yourself']
     comment=comment_tb.objects.filter(user_id_id=my_id,id=id)

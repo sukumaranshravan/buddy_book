@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Posts</title>
+  <title>View Notifications</title>
   <link rel="stylesheet" href="/static/bootstrap-5.3.2-dist/css/bootstrap.css">
   <script src="/static/bootstrap-5.3.2-dist/js/bootstrap.js"></script>
 </head>
@@ -13,7 +13,7 @@
           <img src="/media/buddy_book_Logo.png" alt="" height="100" width="100" class="bg-white"><h5 style="color:white;">buddybook</h5>&nbsp;&nbsp;&nbsp;&nbsp;<h6 class="align-content-end"><em>Logged In User : </em><b class="text-white">{{key}}</b></h6><h6>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'log_out' %}" class="text-white">Sign Out?</a></h6>
       </div>
       <div class="row">            
-          <div class="col-3 border">
+          <div class="col-4 border">
               <ul>
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'friend_request' %}">Friend Requests</a></li>
@@ -23,10 +23,9 @@
                 <li>Settings</li>
               </ul>
           </div>
-          <div class="col-9 border">
+          <div class="col-8 border">
             <div>
-                
-                {% for i in see %}
+                {% for i in cat %}
                 <p><b style="color: blue;">Me :</b>&nbsp;&nbsp;<b>{{i.title}}</b></p>
                 <p><img src="{{i.image.url}}" alt="" height="300" width="400"></p>
                 <p><em>{{i.post}}</em></p>    

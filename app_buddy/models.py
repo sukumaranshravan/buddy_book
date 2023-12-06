@@ -50,5 +50,4 @@ class notifications_tb(models.Model):
     post_id=models.ForeignKey(post_tb,on_delete=models.CASCADE)
     comment=models.CharField(max_length=20,default=0)
     like=models.CharField(max_length=20,default=0)
-    
-    
+    remarks=models.CharField(max_length=20,default='unseen')
