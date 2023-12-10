@@ -44,9 +44,13 @@ def home(request):
     name=buddy[0].user_name
     got_a_buddy=friend_tb.objects.filter(status=my_id)
     view_comment=comment_tb.objects.filter()
+    my_posts=post_tb.objects.filter(user_id_id=my_id)
+    my_post_notify=my_posts[0].id
+    notify=notifications_tb.objects.filter(remarks='unseen',post_id_id=my_post_notify).exclude(user_id_id=my_id)
+    notifications=notify.count()
     if got_a_buddy.count() >0:
         view_post=post_tb.objects.filter().order_by('-date') 
-        return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'see':view_post,'bud_post':got_a_buddy,'comment':view_comment})  
+        return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'see':view_post,'bud_post':got_a_buddy,'comment':view_comment,'ntfy':notifications})  
     else:
         msg='Make friends to see what they posts'
         return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'alert':msg})  

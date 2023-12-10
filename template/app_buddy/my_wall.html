@@ -10,7 +10,7 @@
 <body style="background-color:rgb(241, 244, 246);">
     <div class="container bg-white">
         <div class="navbar navbar-expand-lg bg-primary  col-12">
-            <img src="/media/buddy_book_Logo.png" alt="" height="100" width="100" class="bg-white"><h5 style="color:white;">buddybook</h5>&nbsp;&nbsp;&nbsp;&nbsp;<h6 class="align-content-end"><em>Logged In User : </em><b class="text-white">{{key}}</b></h6><h6>&nbsp;&nbsp;&nbsp;&nbsp;</h6>
+            <img src="/media/buddy_book_Logo.png" alt="" height="100" width="100" class="bg-white"><h5 style="color:white;">buddybook</h5>&nbsp;&nbsp;&nbsp;&nbsp;<h6 class="align-content-end"><em>Logged In: </em><b class="text-white">{{key}}</b>&nbsp;&nbsp;</h6><h6>&nbsp;<a href="{% url 'notifications' %}" class="text-danger"><img src="/media/notification_icon.png" height="25" alt="bell" class="bg-white">&nbsp;</a><b class="text-bg-danger text-white">{{ntfy}}</b>&nbsp;&nbsp;</h6>
             <form method="post" action="{% url 'find_buddy' %}">
                 {% csrf_token %}
             <h6 style="color: rgb(255, 243, 240);">&nbsp;&nbsp;<input type="text" name="entry" placeholder="find people"><input type="submit" value="Search">
