@@ -1,44 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Wall</title>
-    <link rel="stylesheet" href="/static/bootstrap-5.3.2-dist/css/bootstrap.css">
-    <script src="/static/bootstrap-5.3.2-dist/js/bootstrap.js"></script>
-</head>
-<body style="background-color:rgb(241, 244, 246);">
-    <div class="container bg-white">
-        <div class="navbar navbar-expand-lg bg-primary  col-12">
-            <img src="/media/buddy_book_Logo.png" alt="" height="100" width="100" class="bg-white"><h5 style="color:white;">buddybook</h5>&nbsp;&nbsp;&nbsp;&nbsp;<h6 class="align-content-end"><em>Logged In User : </em><b class="text-white">{{key}}</b></h6><h6>&nbsp;&nbsp;&nbsp;&nbsp;</h6>
-            <form method="post" action="{% url 'find_buddy' %}">
-                {% csrf_token %}
-            <h6 style="color: rgb(255, 243, 240);">&nbsp;&nbsp;<input type="text" name="entry" placeholder="find people"><input type="submit" value="Search">
-            </form>
-            <a href="{% url 'log_out' %}" class="text-white">Sign Out?</a></h6>    
-        </div>
-        <div class="row">            
-            <div class="col-3">
-                {% for i in detail %}
-                <img src="{{i.photo.url}}" alt="" height="350px" width="300px" style="position: relative;">
-                {% endfor %}
-                <br>
-                <ul>
-                    <li><a href="{% url 'home' %}">Home</a></li>
-                    <li><a href="{% url 'friend_request' %}">Friend Requests</a></li>
-                    <li><a href="{% url 'friend_list' %}">My Friends</a></li>
-                    <li><a href="{% url 'my_post' %}">My Posts</a></li>
-                    <li><a href="{% url 'about_me' %}">About Me</a></li>
-                    <li>Settings</li>
-                </ul>                
-            </div>   
-            {% for i in see %}               
-                <div class="col-4">
-                   <p><img src="{{i.image.url}}" alt="" height="300px" width="400px"></p>
+{% extends 'base.html' %} 
+{% block title %} My Photos {% endblock %}
+{% block content %} 
+                          
+                <div class="content">
+                     
+                    <div>
+                        {% for i in see %}
+                        <img src="{{i.image.url}}" alt="" height="400px" width="500px" style="margin: 20px; border-radius: 10px;">
+                         {% endfor %} 
+                    </div>
+                   
+                   
+                   
                 </div> 
-                {% endfor %}                        
-        </div>
-    </div>
+                                       
+
     {% if messages  %}
             {% for msg in messages %}
             <script>
@@ -46,5 +22,4 @@
             </script>
             {% endfor %}
             {% endif %}
-</body>
-</html>
+{% endblock %}

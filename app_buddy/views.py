@@ -45,9 +45,14 @@ def home(request):
     got_a_buddy=friend_tb.objects.filter(status=my_id)
     view_comment=comment_tb.objects.filter()
     my_posts=post_tb.objects.filter(user_id_id=my_id)
-    my_post_notify=my_posts[0].id
-    notify=notifications_tb.objects.filter(remarks='unseen',post_id_id=my_post_notify).exclude(user_id_id=my_id)
-    notifications=notify.count()
+    notifications=0
+    for i in my_posts:
+        post_id=i.id
+        notify=notifications_tb.objects.filter(remarks='unseen',post_id_id=post_id)
+        if notify.count()>0:
+            notifications+=1
+        else:
+            notifications+=0
     if got_a_buddy.count() >0:
         view_post=post_tb.objects.filter().order_by('-date') 
         return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'see':view_post,'bud_post':got_a_buddy,'comment':view_comment,'ntfy':notifications})  
@@ -132,7 +137,7 @@ def commentaction(request):
     post_id=request.POST['id']
     comment=comment_tb(comment=comment,post_id_id=post_id,user_id_id=my_id)
     comment.save()
-    notify=notify=notifications_tb(post_id_id=post_id,user_id_id=my_id,comment='commented')
+    notify=notifications_tb(post_id_id=post_id,user_id_id=my_id,comment='commented',remarks='unseen')
     notify.save()
     return redirect('home')
 
@@ -142,8 +147,10 @@ def reply(request,id):
 
 def friend_list(request):
     my_id=request.session['yourself']
+    buddy=register_tb.objects.filter(id=my_id)
+    name=buddy[0].user_name
     my_friends=friend_tb.objects.filter(status=my_id)
-    return render(request,'app_buddy/friend_list.html',{'key':my_friends})
+    return render(request,'app_buddy/friend_list.html',{'buddy_list':my_friends,'key':name})
 
 def my_photos(request):
     my_id=request.session['yourself']
@@ -153,13 +160,18 @@ def my_photos(request):
 
 def about_me(request):
     my_id=request.session['yourself']
+    my_id=request.session['yourself']
+    buddy=register_tb.objects.filter(id=my_id)
+    name=buddy[0].user_name
     my_details=register_tb.objects.filter(id=my_id)
-    return render(request,'app_buddy/about_me.html',{'key':my_details})
+    return render(request,'app_buddy/about_me.html',{'key':name, 'detail':my_details})
 
 def settings(request):
     my_id=request.session['yourself']
+    buddy=register_tb.objects.filter(id=my_id)
+    name=buddy[0].user_name
     my_details=register_tb.objects.filter(id=my_id)
-    return render(request,'app_buddy/settings.html',{'key':my_details})
+    return render(request,'app_buddy/settings.html',{'my_set':my_details,'key':name})
 def change_photo(request):
     my_id=request.session['yourself']
     new_pic=request.FILES['photo']
@@ -184,7 +196,7 @@ def likes(request,id):
         post_likes=post_tb.objects.filter(id=id)
         like_count=post_likes[0].likes
         post_tb.objects.filter(id=id).update(likes=like_count+1)
-        notify=notifications_tb(post_id_id=id,user_id_id=my_id,like='liked')
+        notify=notifications_tb(post_id_id=id,user_id_id=my_id,like='liked',remarks='unseen')
         notify.save()
         return redirect('home')
     elif check_my_like.count()>0:

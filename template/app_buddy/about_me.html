@@ -1,35 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Find People</title>
-  <link rel="stylesheet" href="/static/bootstrap-5.3.2-dist/css/bootstrap.css">
-  <script src="/static/bootstrap-5.3.2-dist/js/bootstrap.js"></script>
-</head>
-<body style="background-color:rgb(241, 244, 246);">
-  <div class="container bg-white">
-      <div class="navbar navbar-expand-lg bg-primary">
-          <img src="/media/buddy_book_Logo.png" alt="" height="100" width="100" class="bg-white"><h5 style="color:white;">buddybook</h5>&nbsp;&nbsp;&nbsp;&nbsp;<h6 class="align-content-end"></h6><h6>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'log_out' %}" class="text-white">Sign Out?</a></h6>
-      </div>
-      <div class="row">            
-          <div class="col-3 border">
-              <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'my_post' %}">My Posts</a></li>
-                <li><a href="{% url 'friend_request' %}">Friend Requests</a></li>
-                <li><a href="{% url 'friend_list' %}">My Friends</a></li>
-                <li><a href="{% url 'my_photos' %}">My Photos</a></li>
-                <li>About Me</li>
-                <li><a href="{% url 'settings' %}">Settings</a></li>
-              </ul>
-          </div>
+{% extends 'base.html' %}
+
+{% block title %} About Me {% endblock %}
+
+{% block content %}
           
 
-          <div class="col-8 border">
-            {% for i in key %}
+          <div class="content" style="margin-left: 250px;">
+            {% for i in detail %}
             <div class="col-2" style="align-items: end;">
-                <img src="{{i.photo.url}}" alt="" height="200px" width="200px">
+                <img src="{{i.photo.url}}" alt="" height="200px" width="200px" style="margin-left: 100px; margin-bottom: 20px; border-radius: 5px;">
             </div>
                 <div class="col-6">
                      <input type="text" name="name" value="{{i.first_name}}" class="form-control"> 
@@ -43,8 +22,7 @@
                  
             {% endfor %}                            
             </div>
-        </div>
-  </div>
+
   {% if messages  %}
           {% for msg in messages %}
           <script>
@@ -52,5 +30,4 @@
           </script>
           {% endfor %}
           {% endif %}
-</body>
-</html>
+{% endblock %}

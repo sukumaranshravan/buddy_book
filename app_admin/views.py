@@ -22,9 +22,14 @@ def log_in(request):
         view_post=post_tb.objects.filter().order_by('-date')
         view_comment=comment_tb.objects.filter()
         my_posts=post_tb.objects.filter(user_id_id=my_id)
-        my_post_notify=my_posts[0].id
-        notify=notifications_tb.objects.filter(remarks='unseen',post_id_id=my_post_notify).exclude(user_id_id=my_id)
-        notifications=notify.count()
+        notifications=0
+        for i in my_posts:
+            post_id=i.id
+            notify=notifications_tb.objects.filter(remarks='unseen',post_id_id=post_id)
+            if notify.count()>0:
+                notifications+=1
+            else:
+                notifications+=0
         if got_a_buddy.count()>0:
             messages.add_message(request,messages.INFO,f'{u_name} logged in Successfully')    
             return render(request,'app_buddy/my_wall.html',

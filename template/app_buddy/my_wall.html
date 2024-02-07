@@ -1,78 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Wall</title>
-    <link rel="stylesheet" href="/static/bootstrap-5.3.2-dist/css/bootstrap.css">
-    <script src="/static/bootstrap-5.3.2-dist/js/bootstrap.js"></script>
-</head>
-<body style="background-color:rgb(241, 244, 246);">
-    <div class="container bg-white">
-        <div class="navbar navbar-expand-lg bg-primary  col-12">
-            <img src="/media/buddy_book_Logo.png" alt="" height="100" width="100" class="bg-white"><h5 style="color:white;">buddybook</h5>&nbsp;&nbsp;&nbsp;&nbsp;<h6 class="align-content-end"><em>Logged In: </em><b class="text-white">{{key}}</b>&nbsp;&nbsp;</h6><h6>&nbsp;<a href="{% url 'notifications' %}" class="text-danger"><img src="/media/notification_icon.png" height="25" alt="bell" class="bg-white">&nbsp;</a><b class="text-bg-danger text-white">{{ntfy}}</b>&nbsp;&nbsp;</h6>
-            <form method="post" action="{% url 'find_buddy' %}">
-                {% csrf_token %}
-            <h6 style="color: rgb(255, 243, 240);">&nbsp;&nbsp;<input type="text" name="entry" placeholder="find people"><input type="submit" value="Search">
-            </form>
-            <a href="{% url 'log_out' %}" class="text-white">Sign Out?</a></h6>    
-        </div>
-        <div class="row">            
-            <div class="col-3">
-                {% for i in detail %}
-                <img src="{{i.photo.url}}" alt="" height="350px" width="300px" style="position: relative;">
-                {% endfor %}
-                <br>
-                <ul>
-                    <li><a href="{% url 'my_post' %}">My Posts</a></li>
-                    <li><a href="{% url 'friend_request' %}">Friend Requests</a></li>
-                    <li><a href="{% url 'friend_list' %}">My Friends</a></li>
-                    <li><a href="{% url 'my_photos' %}">My Photos</a></li>
-                    <li><a href="{% url 'about_me' %}">About Me</a></li>                    
-                    <li><a href="{% url 'settings' %}">Settings</a></li>
-                    <li><a href="{% url 'notifications' %}">Notifications</a></li>
-                </ul>
-                
-            </div>
-            <div class="col-9 border">
-                <div>
-                    <a href="{% url 'post' %}">Post Something.</a>
-                    <br>                    
-                </div>
-                <div>
-                    {% if bud_post == null %}
-                        <h5><br>{{alert}}</h5>
-                    {% else %}
 
-                    {% for j in see %}
-                    {% for i in bud_post %} 
-                        {% if i.request_from.id == j.user_id_id  %}
-                    <p><b><img src="{{i.request_from.photo.url}}" alt="No Image" height="50px" width="50px">{{i.request_from.first_name}}&nbsp;{{i.request_from.last_name}}</b>&nbsp;&nbsp;Has posted {{j.date}}</p>                                      
-                    <p><b>{{j.title}}</b></p>
-                    <p><img src="{{j.image.url}}" alt="" height="300" width="450"></p>
-                    <p><em>{{j.post}}</em></p>
-                    <p><a href="{% url 'likes' j.id %}"><img src="/media/like.png" alt="" height="25px" width="25px"></a><b style="color: blue;">{{j.likes}}&nbsp;</b>likes&nbsp;<a href="{% url 'likers' j.id %}">Liked by</a>&nbsp;&nbsp;<img src="/media/dislike.png" alt="" height="20x" width="20px"></a> &nbsp;dislikes&nbsp;&nbsp;&nbsp;<a href="{% url 'comment' j.id %}">Comment</a></p>                    
-                    <!-- (actually there is an if condition in the code below after {{k.comment}} for edit comment and delete comment to make changes or delete comment for a particular user, so that only that user can make change, for that I have used the {{key}} of logged in user_name, thats is why there is a 'key' in if condition ) -->
-                    {% for k in comment %}  
-                      {% if j.id == k.post_id_id %}         
-                    <p class="col-8"><b style="color: blue;"><img src="{{k.user_id.photo.url}}" height="30px" width="30px" alt="">{{k.user_id.user_name}} :</b><em style="color: rgb(12, 12, 12);" class="form-control">{{k.comment}}&nbsp;&nbsp;{% if k.user_id.user_name == key %}<a href="{% url 'edit_comment' k.id %}" class="text-success">Edit</a>&nbsp;&nbsp;<a href="{'#'}" class="text-danger">Delete</a>{% endif %}</em></p>
-                      {% endif %}
-                      {% endfor %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-                    {% endif %}
-                    <br>
-                </div> 
-            </div>
-        </div>
-    </div>
-    {% if messages  %}
-            {% for msg in messages %}
-            <script>
-                alert("{{msg}}")
-            </script>
-            {% endfor %}
-            {% endif %}
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %} My Wall {% endblock %}
+{% block content %}
+          <div class="content">
+            <div style="margin-bottom: 10px;">
+              <a href="{% url 'post' %}" class="nav-link"><h5>Post Something..</h5></a>
+              <br>                    
+          </div>
+          <div>
+              {% if bud_post == null %}
+                  <h5><br>{{alert}}</h5>
+              {% else %}
+
+              {% for j in see %}
+              {% for i in bud_post %} 
+                  {% if i.request_from.id == j.user_id_id  %}
+              <p><b><img src="{{i.request_from.photo.url}}" alt="No Image" height="50px" width="50px">{{i.request_from.first_name}}&nbsp;{{i.request_from.last_name}}</b>&nbsp;&nbsp;Has posted {{j.date}}</p>                                      
+              <p><b>{{j.title}}</b></p>              
+              <p><em>{{j.post}}</em></p>
+              <p><img src="{{j.image.url}}" alt="" height="550" width="750" style="border-radius: 10px;"></p>
+              <p><a href="{% url 'likes' j.id %}"><img src="/media/like.png" alt="" height="25px" width="25px"></a><b style="color: blue;">{{j.likes}}&nbsp;</b>likes&nbsp;<a href="{% url 'likers' j.id %}">Liked by</a>&nbsp;&nbsp;<img src="/media/dislike.png" alt="" height="20x" width="20px"></a> &nbsp;dislikes&nbsp;&nbsp;&nbsp;<a href="{% url 'comment' j.id %}">Comment</a></p>                    
+              <!-- (actually there is an if condition in the code below after {{k.comment}} for edit comment and delete comment to make changes or delete comment for a particular user, so that only that user can make change, for that I have used the {{key}} of logged in user_name, thats is why there is a 'key' in if condition ) -->
+              {% for k in comment %}  
+                {% if j.id == k.post_id_id %}         
+              <p class="col-8"><b style="color: blue;"><img src="{{k.user_id.photo.url}}" height="50px" width="50px" alt="">{{k.user_id.user_name}} :</b><em style="color: rgb(12, 12, 12);" class="form-control">{{k.comment}}&nbsp;&nbsp;{% if k.user_id.user_name == key %}<a href="{% url 'edit_comment' k.id %}" class="text-success">Edit</a>&nbsp;&nbsp;<a href="{'#'}" class="text-danger">Delete</a>{% endif %}</em></p>
+                {% endif %}
+                {% endfor %}
+              {% endif %}
+              {% endfor %}
+              {% endfor %}
+              {% endif %}
+              <br>
+          </div> 
+          </div>
+    {% endblock %}
