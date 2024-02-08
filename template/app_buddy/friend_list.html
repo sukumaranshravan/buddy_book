@@ -1,34 +1,32 @@
 {% extends 'base.html' %}
 {% block title %} Friends List {% endblock %}
 {% block content %}
-          <div class="col-9 border">
-                <div class="col-6">
-                    {% for i in buddy_list %}
+          <div class="content">
+            
+                <div class="col-8" style="display: grid; grid-template-columns: 2fr 2fr; gap: 50px; margin: auto;"> 
+                    {% for i in buddy_list %}                   
                      <table>
                         <tr>
-                            <th>Name</th>
+                            
                             <td class="form-control"><div class="col-2">                                
-                                <img src="{{i.request_from.photo.url}}" alt="No picture" height="100px" width="100px">                              
+                                <img src="{{i.request_from.photo.url}}" alt="No picture" height="100px" width="100px" >                              
                             </div>{{i.request_from.first_name}}&nbsp;{{i.request_from.last_name}}</td>                        
                         </tr>
                         <tr>                            
                            <td><input type="hidden" name="friend_id" value="{{i.request_from.id}}"></td>                          
                         </tr>
-                        <tr>
-                            <th>Gender</th>
+                        <!-- <tr>                            
                             <td class="form-control">{{i.request_from.gender}}</td>                                  
                         </tr>
                         <tr>
-                            <th>Address</th>
+                            
                             <td class="form-control">{{i.request_from.address}}</td>
-                        </tr>
+                        </tr> -->
                         <tr>
-                            <th></th>
-                            <td><a href="{% url 'unfriend' i.id %}">Unfriend</a></td>
+                            <td><a href="{% url 'unfriend' i.id %}" onclick="return confirm('Are you sure you want to Unfriend this user?')" style="color: red;" class="nav-link" >Unfriend</a></td>
                         </tr>
-                     </table>                                  
-                    {% endfor %}  
-                                      
+                     </table> 
+                     {% endfor %}                                                                                             
                 </div>  
                                
             </div>

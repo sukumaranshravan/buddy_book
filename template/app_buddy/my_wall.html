@@ -3,33 +3,35 @@
 {% block title %} My Wall {% endblock %}
 {% block content %}
           <div class="content">
-            <div style="margin-bottom: 10px;">
-              <a href="{% url 'post' %}" class="nav-link"><h5>Post Something..</h5></a>
+            <div style="margin-left: 50px;">
+              <a href="{% url 'post' %}" class="nav-link"><h5 style="color: rgb(79, 79, 236);">Post Something..</h5></a>
               <br>                    
           </div>
-          <div>
+          <div style="margin-left: 30px;">            
               {% if bud_post == null %}
                   <h5><br>{{alert}}</h5>
               {% else %}
-
               {% for j in see %}
               {% for i in bud_post %} 
                   {% if i.request_from.id == j.user_id_id  %}
-              <p><b><img src="{{i.request_from.photo.url}}" alt="No Image" height="50px" width="50px">{{i.request_from.first_name}}&nbsp;{{i.request_from.last_name}}</b>&nbsp;&nbsp;Has posted {{j.date}}</p>                                      
+                  <hr style="margin-bottom: 40px;">
+              <p><b style="color: rgb(32, 32, 215);"><a href="{% url 'fetch_buddy' j.user_id_id %}" class="nav-link"><img src="{{i.request_from.photo.url}}" alt="user-profile-picture" height="50px" width="50px" style="border-radius: 50%;">{{i.request_from.first_name}}&nbsp;{{i.request_from.last_name}}</b></a><span style="font-style: italic;font-size: xx-small;">&nbsp;&nbsp;Has posted on {{j.date}}</p>                                      
               <p><b>{{j.title}}</b></p>              
               <p><em>{{j.post}}</em></p>
-              <p><img src="{{j.image.url}}" alt="" height="550" width="750" style="border-radius: 10px;"></p>
+              <p><img src="{{j.image.url}}" alt="" height="450" width="600" style="border-radius: 10px;"></p>
               <p><a href="{% url 'likes' j.id %}"><img src="/media/like.png" alt="" height="25px" width="25px"></a><b style="color: blue;">{{j.likes}}&nbsp;</b>likes&nbsp;<a href="{% url 'likers' j.id %}">Liked by</a>&nbsp;&nbsp;<img src="/media/dislike.png" alt="" height="20x" width="20px"></a> &nbsp;dislikes&nbsp;&nbsp;&nbsp;<a href="{% url 'comment' j.id %}">Comment</a></p>                    
               <!-- (actually there is an if condition in the code below after {{k.comment}} for edit comment and delete comment to make changes or delete comment for a particular user, so that only that user can make change, for that I have used the {{key}} of logged in user_name, thats is why there is a 'key' in if condition ) -->
               {% for k in comment %}  
                 {% if j.id == k.post_id_id %}         
-              <p class="col-8"><b style="color: blue;"><img src="{{k.user_id.photo.url}}" height="50px" width="50px" alt="">{{k.user_id.user_name}} :</b><em style="color: rgb(12, 12, 12);" class="form-control">{{k.comment}}&nbsp;&nbsp;{% if k.user_id.user_name == key %}<a href="{% url 'edit_comment' k.id %}" class="text-success">Edit</a>&nbsp;&nbsp;<a href="{'#'}" class="text-danger">Delete</a>{% endif %}</em></p>
+              <p class="col-8"><b style="color: blue;"><a href="{% url 'fetch_buddy' k.user_id_id %}"><img src="{{k.user_id.photo.url}}" height="50px" width="50px" alt="" style="border-radius: 50%;"></a>{{k.user_id.user_name}} :</b><em style="color: rgb(12, 12, 12);" class="form-control">{{k.comment}}&nbsp;&nbsp;{% if k.user_id.user_name == key %}<a href="{% url 'edit_comment' k.id %}" class="text-success">Edit</a>&nbsp;&nbsp;<a href="{'#'}" class="text-danger">Delete</a>{% endif %}</em></p>              
                 {% endif %}
                 {% endfor %}
               {% endif %}
               {% endfor %}
               {% endfor %}
+              
               {% endif %}
+              
               <br>
           </div> 
           </div>

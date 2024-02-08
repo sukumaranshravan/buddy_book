@@ -1,18 +1,23 @@
 {% extends 'base.html' %} 
 {% block title %} My Photos {% endblock %}
+
 {% block content %} 
-                          
-                <div class="content">
-                     
-                    <div>
-                        {% for i in see %}
-                        <img src="{{i.image.url}}" alt="" height="400px" width="500px" style="margin: 20px; border-radius: 10px;">
-                         {% endfor %} 
-                    </div>
-                   
-                   
-                   
-                </div> 
+    <!-- <link rel="stylesheet" href="/static/style.css">      -->
+    <style>
+        .my_pic {
+    border: solid rgb(209, 200, 200);   
+    border-width: 10px;
+    margin: 20px; 
+    border-radius: 10px;
+}
+    </style>
+<div class="content"> 
+    <div>
+        {% for i in see %}
+        <img src="{{i.image.url}}" alt="" height="300px" width="400px" class="my_pic">
+         {% endfor %} 
+    </div>
+</div>         
                                        
 
     {% if messages  %}

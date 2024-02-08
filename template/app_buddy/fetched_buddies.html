@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 
-{% block title %} Find people {% endblock %}
+{% block title %} People {% endblock %}
 
 {% block content %}
           <div class="content">
                 <div class="col-6">
-                    {% for i in get_buddy %}
+                    {% for i in see %}
                      <table>
                         <form action="{% url 'request_for_friendship' %}" method="post">
                             {% csrf_token %}
                         <tr>
+                            <!-- <th>Name</th> -->
                             <td class="form-control"><div class="col-2">                                
                                 <img src="{{i.photo.url}}" alt="No picture" height="100px" width="100px">                              
                             </div>{{i.first_name}}&nbsp;{{i.last_name}}</td>                        
@@ -18,20 +19,22 @@
                            <td><input type="hidden" name="friend_id" value="{{i.id}}"></td>                          
                         </tr>
                         <tr>
+                            <!-- <th>Gender</th> -->
                             <td class="form-control">{{i.gender}}</td>                                  
                         </tr>
                         <!-- <tr>
                             <th>Address</th>
                             <td class="form-control">{{i.address}}</td>
                         </tr> -->
-                        <tr>                         
+                        <tr>
+                            <!-- <th></th>                             -->
                             <td><input type="submit" value="Friend Request" class="btn btn-primary"></td>
-                            <td><a href="{% url 'view_profile' i.id %}" class="nav-link">Visit Profile</a></td>                                                                                  
+                            <td><a href="{% url 'view_profile' i.id %}">Visit Profile</a></td>                                                        
                         </tr>
-                        </form>                        
+                        </form>
                      </table>                                  
                     {% endfor %}  
-                                                                                     
+                                      
                 </div>  
                                
             </div>

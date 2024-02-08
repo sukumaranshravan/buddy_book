@@ -80,7 +80,7 @@ def delete_post(request,id):
 def find_buddy(request):
     search_word=request.POST['entry']
     buddies=register_tb.objects.filter(first_name__istartswith=search_word) | register_tb.objects.filter(user_name__istartswith=search_word)
-    return render(request,'app_buddy/buddies.html',{'key':buddies})
+    return render(request,'app_buddy/buddies.html',{'get_buddy':buddies})
     
 def request_for_friendship(request):
     my_id=request.session['yourself']
@@ -124,6 +124,7 @@ def unfriend(request,id):
     get_buddy=friend_tb.objects.filter(id=id,status=my_id)
     bud_status_in_my_request=get_buddy[0].request_from_id
     friend_tb.objects.filter(id=id,status=my_id).delete()
+    messages.add_message(request,messages.INFO,"Selected User is removed from your friends list.")
     friend_tb.objects.filter(request_from_id=my_id,status=bud_status_in_my_request).delete()
     return redirect('friend_list')
 
@@ -163,8 +164,7 @@ def about_me(request):
     my_id=request.session['yourself']
     buddy=register_tb.objects.filter(id=my_id)
     name=buddy[0].user_name
-    my_details=register_tb.objects.filter(id=my_id)
-    return render(request,'app_buddy/about_me.html',{'key':name, 'detail':my_details})
+    return render(request,'app_buddy/about_me.html',{'key':name, 'detail':buddy})
 
 def settings(request):
     my_id=request.session['yourself']
@@ -208,11 +208,13 @@ def likes(request,id):
         return redirect('home')
     
 def likers(request,id):
+    my_id=request.session['yourself']
+    my_details = register_tb.objects.filter(id=my_id)    
+    name = my_details[0].user_name
     post=post_tb.objects.filter(id=id)
-    user=register_tb.objects.filter(id=id)
     post_id=post[0].id
     liker=liked_by_tb.objects.filter(post_id_id=post_id)
-    return render(request,'app_buddy/liked_by.html',{'key':liker,'buddy':user})
+    return render(request,'app_buddy/liked_by.html',{'key':name,'see':liker})
 
 def buddy(request):
     search_word=request.POST['this']
@@ -252,3 +254,19 @@ def update_comment(request):
     except:
         messages.add_message(request,messages.INFO,"No Changes Made")
         return redirect('home')
+    
+def fetch_buddy(request,id):    
+    get_buddy = register_tb.objects.filter(id=id)
+    return render(request,'app_buddy/fetched_buddies.html',{'see':get_buddy})
+
+def view_profile(request,id):
+    buddy_details = register_tb.objects.filter(id=id)
+    got_a_buddy=friend_tb.objects.filter(status=id)
+    view_post=post_tb.objects.filter().order_by('-date')
+    view_comment=comment_tb.objects.filter()
+    my_posts=post_tb.objects.filter(user_id_id=id)
+    return render(request,'app_buddy/buddy_profile.html',{'cat':buddy_details,'bud_post':got_a_buddy,'see':view_post, 'comment':view_comment})
+
+def about_buddy(request,id):
+    buddy_details = register_tb.objects.filter(id=id)
+    return render(request,'app_buddy/about_me.html',{'detail':buddy_details})

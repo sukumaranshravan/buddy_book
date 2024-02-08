@@ -29,4 +29,7 @@ urlpatterns = [
     path('edit_comment<int:id>/',views.edit_comment,name='edit_comment'),
     path('update_comment/',views.update_comment,name='update_comment'),
     path('view_notification<int:id>/',views.view_notification,name='view_notification'),
+    path('fetch_buddy<int:id>/',views.fetch_buddy,name='fetch_buddy'),
+    path('view_profile<int:id>/',views.view_profile,name='view_profile'),
+    path('about_buddy<int:id>/',views.about_buddy,name='about_buddy'),
 ]

@@ -2,11 +2,12 @@
 {% block title %} My Posts {% endblock %}
 {% block content %}
           <div class="content">
-            <div>
+            <div style="margin-left: 50px;">
                 
                 {% for i in see %}
+                <hr>
                 <p><b style="color: blue;">Me :</b>&nbsp;&nbsp;<b>{{i.title}}</b></p>
-                <p><img src="{{i.image.url}}" alt="" height="600" width="720" style="border-radius: 15px;"></p>
+                <p><img src="{{i.image.url}}" alt="" height="500" width="620" style="border-radius: 15px;"></p>
                 <p><em>{{i.post}}</em></p>    
                 <p><a href="{% url 'likes' i.id %}"><img src="/media/like.png" alt="" height="25px" width="25px"></a><b style="color: blue;">{{i.likes}}&nbsp;</b>likes<a href="{% url 'likers' i.id %}">&nbsp;&nbsp;Liked by</a> &nbsp;&nbsp;<a href="{% url 'reply' i.id %}">Reply</a>&nbsp;&nbsp;<a href="{% url 'delete_post' i.id %}" class="text-danger">Delete Post</a></p>                
                 {% for k in comment %}  
