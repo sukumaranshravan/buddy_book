@@ -247,13 +247,13 @@ def notifications(request):
     my_id=request.session['yourself']
     buddy=register_tb.objects.filter(id=my_id)
     name=buddy[0].user_name
-    notify=notifications_tb.objects.filter(remarks='unseen').order_by('-id').exclude(user_id_id=my_id)
-    see=post_tb.objects.filter()
+    notify=notifications_tb.objects.filter(remarks='unseen').order_by('-id')
+    # see=post_tb.objects.filter()
     msg="You have No Notifications"
     if notify.count()>0:
-        return render(request,'app_buddy/notifications.html',{'ntfy':notify,'cat':see,'key':name})
+        return render(request,'app_buddy/notifications.html',{'show':notify,'key':name})
     else:
-        return render(request,'app_buddy/notifications.html',{'show':msg})
+        return render(request,'app_buddy/notifications.html',{'alert':msg})
 
 def view_notification(request,id):
     see=post_tb.objects.filter(id=id)
@@ -284,7 +284,7 @@ def fetch_buddy(request,id):
 def view_profile(request,id):
     buddy_details = register_tb.objects.filter(id=id)
     got_a_buddy=friend_tb.objects.filter(status=id)
-    view_post=post_tb.objects.filter().order_by('-date')
+    view_post=post_tb.objects.filter().order_by('-date').exclude(status="private")
     view_comment=comment_tb.objects.filter()
     # my_posts=post_tb.objects.filter(user_id_id=id)
     return render(request,'app_buddy/buddy_profile.html',{'cat':buddy_details,'bud_post':got_a_buddy,'see':view_post, 'comment':view_comment})

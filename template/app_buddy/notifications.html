@@ -4,8 +4,12 @@
           <div class="content">
             <div> 
               <h5 style="background-color: rgb(242, 39, 39); color: white; text-align: center;">Notifications</h5> 
-                <ol>  
-                  {% for i in ntfy %}
+                <ol> 
+                  {% if key == null %}
+                      <h5 style="text-align: center;"><br>{{alert}}</h5>
+                  {% else %}
+                    
+                  {% for i in show %}                      
                       {% if i.post_id.user_id.user_name == key %} 
                   
                       {% if i.like == 'liked' and i.remarks == 'unseen'  %}                      
@@ -17,6 +21,7 @@
 
                       {% endif %}
                   {% endfor %}
+                  {% endif %}
                 </ol>                                  
                 
             </div>
