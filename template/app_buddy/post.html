@@ -8,6 +8,7 @@
               <form action="{% url 'postaction' %}" method="post" enctype="multipart/form-data">
                   {% csrf_token %}
               <tr>
+                    <input type="hidden" name="id" value="{{i.id}}">
                   <th>Title</th>
                   <td><input type="text" name="title" value="{{i.title}}" class="form-control"></td>
               </tr>

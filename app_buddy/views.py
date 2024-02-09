@@ -26,18 +26,32 @@ def post(request):
     name=buddy[0].user_name
     return render(request,'app_buddy/post.html',{'key':name,'detail':buddy})
 def postaction(request):
-    my_id=request.session['yourself']
-    buddy=register_tb.objects.filter(id=my_id)
-    name=buddy[0].user_name
-    date=datetime.date.today()
-    time=datetime.datetime.now().strftime('%H:%M')
-    title=request.POST['title']
-    post=request.POST['post']
-    image=request.FILES['image']
-    status=request.POST['visibility']
-    my_post=post_tb(title=title,post=post,time=time,date=date,image=image,user_id_id=my_id,status=status)
-    my_post.save()
+    try:        
+        my_id=request.session['yourself']
+        buddy=register_tb.objects.filter(id=my_id)
+        name=buddy[0].user_name
+        date=datetime.date.today()
+        time=datetime.datetime.now().strftime('%H:%M')
+        title=request.POST['title']
+        post=request.POST['post']
+        image=request.FILES['image']
+        status=request.POST['visibility']
+        my_post=post_tb(title=title,post=post,time=time,date=date,image=image,user_id_id=my_id,status=status)
+        my_post.save()
+                
+    except:
+        post_id=request.POST['id']
+        my_id=request.session['yourself']
+        buddy=register_tb.objects.filter(id=my_id)
+        name=buddy[0].user_name
+        date=datetime.date.today()
+        time=datetime.datetime.now().strftime('%H:%M')
+        title=request.POST['title']
+        post=request.POST['post']
+        status=request.POST['visibility']
+        post_tb.objects.filter(id=post_id).update(title=title,post=post,time=time,date=date,user_id_id=my_id,status=status)        
     return render(request,'app_buddy/post.html',{'key':name,'detail':buddy})
+
 
 def home(request):
     my_id=request.session['yourself']
@@ -55,7 +69,7 @@ def home(request):
         else:
             notifications+=0
     if got_a_buddy.count() >0:
-        view_post=post_tb.objects.filter().order_by('-date') 
+        view_post=post_tb.objects.filter().order_by('-date').exclude(status="private") 
         return render(request,'app_buddy/my_wall.html',{'key':name,'detail':buddy,'see':view_post,'bud_post':got_a_buddy,'comment':view_comment,'ntfy':notifications})  
     else:
         msg='Make friends to see what they posts'
@@ -275,3 +289,29 @@ def about_buddy(request,id):
 def edit_post(request,id):
     post_details = post_tb.objects.filter(id=id)
     return render(request,'app_buddy/post.html',{'see':post_details})
+
+def update_post(request):
+    try:
+        my_id=request.session['yourself']
+        buddy=register_tb.objects.filter(id=my_id)
+        name=buddy[0].user_name
+        date=datetime.date.today()
+        time=datetime.datetime.now().strftime('%H:%M')
+        title=request.POST['title']
+        post=request.POST['post']
+        image=request.FILES['image']
+        status=request.POST['visibility']
+        my_post=post_tb(title=title,post=post,time=time,date=date,image=image,user_id_id=my_id,status=status)
+        my_post.save()
+                
+    except:
+        my_id=request.session['yourself']
+        buddy=register_tb.objects.filter(id=my_id)
+        name=buddy[0].user_name
+        date=datetime.date.today()
+        time=datetime.datetime.now().strftime('%H:%M')
+        title=request.POST['title']
+        post=request.POST['post']
+        status=request.POST['visibility']
+        post_tb.objects.filter(user_id_id=my_id).update(title=title,post=post,time=time,date=date,user_id_id=my_id,status=status)        
+    return render(request,'app_buddy/post.html',{'key':name,'detail':buddy})
