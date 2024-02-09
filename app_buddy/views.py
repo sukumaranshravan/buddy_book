@@ -40,16 +40,20 @@ def postaction(request):
         my_post.save()
                 
     except:
-        post_id=request.POST['id']
-        my_id=request.session['yourself']
-        buddy=register_tb.objects.filter(id=my_id)
-        name=buddy[0].user_name
-        date=datetime.date.today()
-        time=datetime.datetime.now().strftime('%H:%M')
-        title=request.POST['title']
-        post=request.POST['post']
-        status=request.POST['visibility']
-        post_tb.objects.filter(id=post_id).update(title=title,post=post,time=time,date=date,user_id_id=my_id,status=status)        
+        try:
+            post_id=request.POST['id']
+            my_id=request.session['yourself']
+            buddy=register_tb.objects.filter(id=my_id)
+            name=buddy[0].user_name
+            date=datetime.date.today()
+            time=datetime.datetime.now().strftime('%H:%M')
+            title=request.POST['title']
+            post=request.POST['post']
+            status=request.POST['visibility']
+            post_tb.objects.filter(id=post_id).update(title=title,post=post,time=time,date=date,user_id_id=my_id,status=status)        
+        except:
+            messages.add_message(request,messages.INFO,"One or more field/s kept blank.")
+            return redirect('home')
     return render(request,'app_buddy/post.html',{'key':name,'detail':buddy})
 
 
@@ -80,10 +84,14 @@ def my_post(request):
     buddy=register_tb.objects.filter(id=my_id)
     name=buddy[0].user_name
     view_post=post_tb.objects.filter(user_id_id=my_id)
-    post_id=view_post[0].id
-    liked_users=liked_by_tb.objects.filter(post_id_id=post_id)
-    view_comment=comment_tb.objects.filter()
-    return render(request,'app_buddy/my_posts.html',{'key':name,'detail':buddy,'see':view_post,'comment':view_comment,'likers':liked_users})
+    if view_post.count()>0:
+        post_id=view_post[0].id
+        liked_users=liked_by_tb.objects.filter(post_id_id=post_id)
+        view_comment=comment_tb.objects.filter()
+        return render(request,'app_buddy/my_posts.html',{'key':name,'detail':buddy,'see':view_post,'comment':view_comment,'likers':liked_users})
+    else:
+        messages.add_message(request,messages.INFO,"You have not posted anything yet!.")
+        return redirect('home')
 
 def delete_post(request,id):    
     post_tb.objects.filter(id=id).delete()
@@ -186,7 +194,7 @@ def settings(request):
     buddy=register_tb.objects.filter(id=my_id)
     name=buddy[0].user_name
     my_details=register_tb.objects.filter(id=my_id)
-    return render(request,'app_buddy/settings.html',{'my_set':my_details,'key':name})
+    return render(request,'app_buddy/settings.html',{'settings':my_details,'key':name})
 def change_photo(request):
     my_id=request.session['yourself']
     new_pic=request.FILES['photo']
@@ -200,7 +208,6 @@ def change_photo(request):
     my_pic_change=post_tb(title=title,post=post,time=time,date=date,image=new_pic,user_id_id=my_id)
     my_pic_change.save()
     return redirect('settings')
-
 
 def likes(request,id):
     my_id=request.session['yourself']    
@@ -279,7 +286,7 @@ def view_profile(request,id):
     got_a_buddy=friend_tb.objects.filter(status=id)
     view_post=post_tb.objects.filter().order_by('-date')
     view_comment=comment_tb.objects.filter()
-    my_posts=post_tb.objects.filter(user_id_id=id)
+    # my_posts=post_tb.objects.filter(user_id_id=id)
     return render(request,'app_buddy/buddy_profile.html',{'cat':buddy_details,'bud_post':got_a_buddy,'see':view_post, 'comment':view_comment})
 
 def about_buddy(request,id):
@@ -315,3 +322,28 @@ def update_post(request):
         status=request.POST['visibility']
         post_tb.objects.filter(user_id_id=my_id).update(title=title,post=post,time=time,date=date,user_id_id=my_id,status=status)        
     return render(request,'app_buddy/post.html',{'key':name,'detail':buddy})
+
+def change_details(request):
+    my_id=request.session['yourself']
+    f_name=request.POST['first_name']
+    l_name=request.POST['last_name']
+    gender=request.POST['gender']
+    dob=request.POST['dob']
+    email=request.POST['email']
+    contact=request.POST['phone']
+    address=request.POST['address']
+    register_tb.objects.filter(id=my_id).update(first_name=f_name,last_name=l_name,gender=gender,dob=dob,email=email,phone=contact,address=address)
+    messages.add_message(request,messages.INFO,"Changes Updated.")
+    return redirect('home')
+def credentials(request):
+    my_id = request.session['yourself']
+    u_name=request.POST['user_name']
+    p_word=request.POST['password']
+    o_pass=request.POST['old_pass']
+    if o_pass == p_word:
+        n_pass=request.POST['new_pass']
+        register_tb.objects.filter(id=my_id).update(user_name=u_name,password=n_pass)
+        messages.add_message(request,messages.INFO,"Credentials updated.")
+    else:
+        messages.add_message(request,messages.INFO,"Password Entered not matches with the Old Password.")
+    return redirect('home')

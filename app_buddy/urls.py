@@ -33,4 +33,6 @@ urlpatterns = [
     path('view_profile<int:id>/',views.view_profile,name='view_profile'),
     path('about_buddy<int:id>/',views.about_buddy,name='about_buddy'),
     path('edit_post<int:id>/',views.edit_post,name='edit_post'),
+    path('change_details/',views.change_details,name='change_details'),
+    path('credentials/',views.credentials,name='credentials'),
 ]

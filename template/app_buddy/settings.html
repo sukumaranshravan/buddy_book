@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %} Find people {% endblock %}
+{% block title %} Account Settings {% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="/static/style.css">
           <div class="content">
-            <div class="col-6">
-                {% for i in my_set %}
+            <div class="profile-pic">
+                {% for i in settings %}
                 <img src="{{i.photo.url}}" alt="" height="350px" width="300px"></li>
                 {% endfor %}
                 <form action="{% url 'change_photo' %}" method="post" enctype="multipart/form-data">
@@ -15,7 +16,82 @@
                 <p><input type="submit" value="Change" class="btn btn-outline-success"></p>
                 </form>
             </div>  
-                         
+            <div>
+                {% for i in settings %}
+               <form action="{% url 'change_details' %}" method="post">
+                {% csrf_token %}
+                <table id="pd">
+                    <thead><h4 style="margin-bottom: 40px; text-align: center; color: blue;">Personal Details</h4></thead>
+                    <tr>                        
+                        <td><input type="text" name="first_name" value="{{i.first_name}}" class="form-control"></td>
+                        <td><input type="text" name="last_name" value="{{i.last_name}}" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        
+                        <td>
+                            {% if i.gender == 'male' %}
+                            <input type="radio" name="gender" checked="true" value="{{i.male}}" class="form-check-input"><label class="form-check-label">Male</label>
+                            <input type="radio" name="gender" value="{{i.female}}" class="form-check-input"><label class="form-check-label">Female</label>
+                            <input type="radio" name="gender" value="{{i.other}}" class="form-check-input"><label class="form-check-label">Other</label>
+                            {% elif i.gender == 'female' %}
+                            <input type="radio" name="gender" value="{{i.male}}" class="form-check-input"><label class="form-check-label">Male</label>
+                            <input type="radio" name="gender" checked="true" value="{{i.female}}" class="form-check-input"><label class="form-check-label">Female</label>
+                            <input type="radio" name="gender" value="{{i.other}}" class="form-check-input"><label class="form-check-label">Other</label>
+                            {% else %}
+                            <input type="radio" name="gender" value="{{i.male}}" class="form-check-input"><label class="form-check-label">Male</label>
+                            <input type="radio" name="gender" value="{{i.female}}" class="form-check-input"><label class="form-check-label">Female</label>
+                            <input type="radio" name="gender" checked="true" value="{{i.other}}" class="form-check-input"><label class="form-check-label">Other</label>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="date" name="dob" value="{{i.dob}}" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="email" value="{{i.email}}" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="phone" value="{{i.phone}}" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td><textarea name="address" cols="20" rows="5" class="form-control">{{i.address}}</textarea></td>
+                    </tr>
+                    <tr>
+                        <td><input type="submit" value="Update Changes" class="btn btn-outline-warning"></td>
+                    </tr>
+                </table>
+                </form>
+                {% endfor %}
+            </div>  
+            <div>
+                {% for i in settings %}
+                <form action="{% url 'credentials' %}" method="post">
+                    {% csrf_token %}
+                    <table>
+                        <thead><h4 style="margin-top: 40px;margin-bottom: 40px; text-align: center; color: red;">Log in Credentials</h4></thead>
+                        <tr>
+                            <th>Username: </th>
+                            <td><input type="text" name="user_name" value="{{i.user_name}}" class="form-control"></td>     
+                        </tr>
+                        <tr>                            
+                            <td><input type="hidden" name="password" value="{{i.password}}" class="form-control"></td>                            
+                        </tr>
+                        <tr>
+                            <th>Old Password: </th>
+                            <td><input type="text" name="old_pass" class="form-control"></td>                            
+                        </tr> 
+                        <tr>
+                            <th>New Passwrod: </th>
+                            <td><input type="text" name="new_pass" class="form-control"></td>
+                        </tr>                 
+                        <tr>
+                            <th></th>
+                            <td><input type="submit" value="Chage Credentials" class="btn btn-outline-danger"></td>
+                        </tr>
+                    </table>
+                </form>
+                {% endfor %}
+            </div>      
           </div>
   {% if messages  %}
           {% for msg in messages %}
