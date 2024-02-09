@@ -32,4 +32,5 @@ urlpatterns = [
     path('fetch_buddy<int:id>/',views.fetch_buddy,name='fetch_buddy'),
     path('view_profile<int:id>/',views.view_profile,name='view_profile'),
     path('about_buddy<int:id>/',views.about_buddy,name='about_buddy'),
+    path('edit_post<int:id>/',views.edit_post,name='edit_post'),
 ]

@@ -19,7 +19,7 @@ def log_in(request):
         request.session['yourself']=buddy_check[0].id
         my_id=request.session['yourself']
         got_a_buddy=friend_tb.objects.filter(status=my_id)
-        view_post=post_tb.objects.filter().order_by('-date')
+        view_post=post_tb.objects.filter().order_by('-date').exclude(status="private") 
         view_comment=comment_tb.objects.filter()
         my_posts=post_tb.objects.filter(user_id_id=my_id)
         notifications=0
@@ -37,6 +37,9 @@ def log_in(request):
         else:
             msg='Make friends to see what they posts'            
             return render(request,'app_buddy/my_wall.html',{'key':u_name,'detail':buddy_check,'alert':msg})
+    else:
+        messages.add_message(request,messages.INFO,'Incorrect Username or Password.')
+        return render(request,'app_admin/start_up.html')
 
 def log_out(request):
     request.session.flush()

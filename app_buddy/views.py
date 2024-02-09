@@ -34,7 +34,8 @@ def postaction(request):
     title=request.POST['title']
     post=request.POST['post']
     image=request.FILES['image']
-    my_post=post_tb(title=title,post=post,time=time,date=date,image=image,user_id_id=my_id)
+    status=request.POST['visibility']
+    my_post=post_tb(title=title,post=post,time=time,date=date,image=image,user_id_id=my_id,status=status)
     my_post.save()
     return render(request,'app_buddy/post.html',{'key':name,'detail':buddy})
 
@@ -270,3 +271,7 @@ def view_profile(request,id):
 def about_buddy(request,id):
     buddy_details = register_tb.objects.filter(id=id)
     return render(request,'app_buddy/about_me.html',{'detail':buddy_details})
+
+def edit_post(request,id):
+    post_details = post_tb.objects.filter(id=id)
+    return render(request,'app_buddy/post.html',{'see':post_details})

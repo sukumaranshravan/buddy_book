@@ -2,12 +2,63 @@
 {% block title %} Post {% endblock %}
 {% block content %}
           <div class="content">
+            {% if see != null %}
+            {% for i in see %}          
+            <table>
+              <form action="{% url 'postaction' %}" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+              <tr>
+                  <th>Title</th>
+                  <td><input type="text" name="title" value="{{i.title}}" class="form-control"></td>
+              </tr>
+              <tr>
+                  <th>Visible to</th>
+                  <td class="p-2">
+                    {% if i.status == 'public' %}
+                      <input type="radio" name="visibility" value="public" checked="true" class="form-check-input"><label class="form-check-label">Public</label>
+                      <input type="radio" name="visibility" value="friends" class="form-check-input"><label class="form-check-label">Friends</label>
+                      <input type="radio" name="visibility" value="private" class="form-check-input"><label class="form-check-label">Private</label>
+                      {% elif i.status == 'friends' %}
+                      <input type="radio" name="visibility" value="public" class="form-check-input"><label class="form-check-label">Public</label>
+                      <input type="radio" name="visibility" value="friends" checked="true" class="form-check-input"><label class="form-check-label">Friends</label>
+                      <input type="radio" name="visibility" value="private" class="form-check-input"><label class="form-check-label">Private</label>
+                      {% else %}
+                      <input type="radio" name="visibility" value="public" class="form-check-input"><label class="form-check-label">Public</label>
+                      <input type="radio" name="visibility" value="friends" class="form-check-input"><label class="form-check-label">Friends</label>
+                      <input type="radio" name="visibility" value="private" checked="true" class="form-check-input"><label class="form-check-label">Private</label>
+                      {% endif %}
+                  </td>
+              </tr>
+              <tr>
+                  <th>Post</th>
+                  <td><textarea name="post" class="form-control" cols="50" rows="10">{{i.post}}</textarea></td>
+              </tr>
+              <tr>
+                  <th>Upload</th>
+                  <td><input type="file" name="image" class="form-control"></td>
+              </tr>
+              <tr>
+                  <th></th>
+                  <td><input type="submit" value="Update Post" class="btn btn-warning"></td>
+              </tr>
+              </form>
+            </table>
+         {% endfor %}
+            {% else %}
               <table>
                 <form action="{% url 'postaction' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                 <tr>
                     <th>Title</th>
                     <td><input type="text" name="title" class="form-control"></td>
+                </tr>
+                <tr>
+                    <th>Visible to</th>
+                    <td class="p-2">
+                        <input type="radio" name="visibility" value="public" class="form-check-input"><label class="form-check-label">Public</label>
+                        <input type="radio" name="visibility" value="friends" class="form-check-input"><label class="form-check-label">Friends</label>
+                        <input type="radio" name="visibility" value="private" class="form-check-input"><label class="form-check-label">Private</label>
+                    </td>
                 </tr>
                 <tr>
                     <th>Post</th>
@@ -23,7 +74,12 @@
                 </tr>
                 </form>
               </table>
+              {% endif %}
           </div>
+          
+
+
+
   
   {% if messages  %}
           {% for msg in messages %}
