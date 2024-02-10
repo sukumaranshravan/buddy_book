@@ -282,12 +282,15 @@ def fetch_buddy(request,id):
     return render(request,'app_buddy/fetched_buddies.html',{'see':get_buddy})
 
 def view_profile(request,id):
+    my_id=request.session['yourself']
+    buddy=register_tb.objects.filter(id=my_id)
+    name=buddy[0].user_name
     buddy_details = register_tb.objects.filter(id=id)
     got_a_buddy=friend_tb.objects.filter(status=id)
     view_post=post_tb.objects.filter().order_by('-date').exclude(status="private")
     view_comment=comment_tb.objects.filter()
     # my_posts=post_tb.objects.filter(user_id_id=id)
-    return render(request,'app_buddy/buddy_profile.html',{'cat':buddy_details,'bud_post':got_a_buddy,'see':view_post, 'comment':view_comment})
+    return render(request,'app_buddy/buddy_profile.html',{'key':name,'cat':buddy_details,'bud_post':got_a_buddy,'see':view_post, 'comment':view_comment})
 
 def about_buddy(request,id):
     buddy_details = register_tb.objects.filter(id=id)
