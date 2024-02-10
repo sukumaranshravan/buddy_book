@@ -14,7 +14,7 @@
                 </svg></a><b style="color: blue;">{{i.likes}}&nbsp;</b>likes<a href="{% url 'likers' i.id %}">&nbsp;&nbsp;Liked by</a> &nbsp;&nbsp;<a href="{% url 'reply' i.id %}">Reply</a>&nbsp;&nbsp;<a href="{% url 'edit_post' i.id %}">Edit</a>&nbsp;&nbsp;<a href="{% url 'delete_post' i.id %}" onclick="return confirm('Are you sure you want to Delete this post?')" class="text-danger">Delete Post</a></p>                
                 {% for k in comment %}  
                 {% if i.id == k.post_id_id %}         
-                <p class="col-8"><b style="color: blue;"><img src="{{k.user_id.photo.url}}" height="30px" width="30px" alt="">{{k.user_id.user_name}} :</b><em style="color: rgb(12, 12, 12);" class="form-control">{{k.comment}}</em></p>                                  
+                <p class="col-8"><b style="color: blue;"><a href="{% url 'fetch_buddy' k.user_id_id %}"><img src="{{k.user_id.photo.url}}" height="50px" width="50px" alt="" style="border-radius: 50%;"></a>{{k.user_id.user_name}} :</b><em style="color: rgb(12, 12, 12);" class="form-control">{{k.comment}}&nbsp;&nbsp;{% if k.user_id.user_name == key %}<a href="{% url 'edit_comment' k.id %}" class="text-success">Edit</a>&nbsp;&nbsp;<a href="{% url 'delete_comment' k.id %}" class="text-danger">Delete</a>{% endif %}</em></p>                                  
                 {% endif %}
                 {% endfor %}
                 {% endfor %}

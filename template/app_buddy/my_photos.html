@@ -5,16 +5,22 @@
     <!-- <link rel="stylesheet" href="/static/style.css">      -->
     <style>
         .my_pic {
-    border: solid rgb(209, 200, 200);   
+    border: solid rgb(255, 255, 255);   
     border-width: 10px;
-    margin: 20px; 
+    margin-top: 20px; 
+    margin-left: 50px;
     border-radius: 10px;
+}
+.inner{
+    background-color: black;
+    opacity: 90%;
+    
 }
     </style>
 <div class="content"> 
-    <div>
+    <div class="inner">
         {% for i in see %}
-        <img src="{{i.image.url}}" alt="" height="300px" width="400px" class="my_pic">
+        <a href="{% url 'view_notification' i.id %}"><img src="{{i.image.url}}" alt="" height="300px" width="400px" class="my_pic"></a>
          {% endfor %} 
     </div>
 </div>         
