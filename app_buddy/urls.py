@@ -35,4 +35,5 @@ urlpatterns = [
     path('edit_post<int:id>/',views.edit_post,name='edit_post'),
     path('change_details/',views.change_details,name='change_details'),
     path('credentials/',views.credentials,name='credentials'),
+    path('delete_comment<int:id>/',views.delete_comment,name='delete_comment'),
 ]

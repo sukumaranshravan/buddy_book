@@ -358,3 +358,9 @@ def credentials(request):
     else:
         messages.add_message(request,messages.INFO,"Password Entered not matches with the Old Password.")
     return redirect('home')
+
+def delete_comment(request,id): 
+    my_id=request.session['yourself']       
+    comment_tb.objects.filter(user_id_id=my_id,id=id).delete()
+    messages.add_message(request,messages.INFO,"Comment deleted.")
+    return redirect('home')
