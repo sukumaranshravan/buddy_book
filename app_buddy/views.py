@@ -184,7 +184,8 @@ def my_photos(request):
 
 def about_me(request):
     my_id=request.session['yourself']
-    my_id=request.session['yourself']
+    buddy=register_tb.objects.filter(id=my_id)
+    name=buddy[0].user_name
     buddy=register_tb.objects.filter(id=my_id)
     name=buddy[0].user_name
     return render(request,'app_buddy/about_me.html',{'key':name, 'detail':buddy})
@@ -203,8 +204,12 @@ def change_photo(request):
     # following code is only to let your buddies know about your new photo
     date=datetime.date.today()
     time=datetime.datetime.now().strftime('%H:%M')
-    title='Profile Picture Updated'
-    post='see my new profile picture'    
+    try:
+        title = request.POST['title']
+        post = request.POST['post']
+    except:
+        title='Profile Picture Updated'
+        post='see my new profile picture'    
     my_pic_change=post_tb(title=title,post=post,time=time,date=date,image=new_pic,user_id_id=my_id)
     my_pic_change.save()
     return redirect('settings')
@@ -277,9 +282,12 @@ def update_comment(request):
         messages.add_message(request,messages.INFO,"No Changes Made")
         return redirect('home')
     
-def fetch_buddy(request,id):    
+def fetch_buddy(request,id):   
+    my_id=request.session['yourself']
+    buddy=register_tb.objects.filter(id=my_id)
+    name=buddy[0].user_name 
     get_buddy = register_tb.objects.filter(id=id)
-    return render(request,'app_buddy/fetched_buddies.html',{'see':get_buddy})
+    return render(request,'app_buddy/fetched_buddies.html',{'key':name,'see':get_buddy})
 
 def view_profile(request,id):
     my_id=request.session['yourself']

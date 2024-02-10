@@ -11,8 +11,10 @@
                 {% endfor %}
                 <form action="{% url 'change_photo' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <h6 style="color: blue;">Change Profile Picture</h6>
+                    <h6 style="color: blue;">Change Profile Picture</h6>                    
                 <p><input type="file" name="photo" class="form-control"></p>
+                    <input type="text" name="title" class="form-control" placeholder="Add a caption">
+                    <input type="text" name="post" class="form-control" placeholder="write something..">
                 <p><input type="submit" value="Change" class="btn btn-outline-success"></p>
                 </form>
             </div>  
@@ -30,17 +32,17 @@
                         
                         <td>
                             {% if i.gender == 'male' %}
-                            <input type="radio" name="gender" checked="true" value="{{i.male}}" class="form-check-input"><label class="form-check-label">Male</label>
-                            <input type="radio" name="gender" value="{{i.female}}" class="form-check-input"><label class="form-check-label">Female</label>
-                            <input type="radio" name="gender" value="{{i.other}}" class="form-check-input"><label class="form-check-label">Other</label>
+                            <input type="radio" name="gender" checked="true" value="male" class="form-check-input"><label class="form-check-label">Male</label>
+                            <input type="radio" name="gender" value="female" class="form-check-input"><label class="form-check-label">Female</label>
+                            <input type="radio" name="gender" value="other" class="form-check-input"><label class="form-check-label">Other</label>
                             {% elif i.gender == 'female' %}
-                            <input type="radio" name="gender" value="{{i.male}}" class="form-check-input"><label class="form-check-label">Male</label>
-                            <input type="radio" name="gender" checked="true" value="{{i.female}}" class="form-check-input"><label class="form-check-label">Female</label>
-                            <input type="radio" name="gender" value="{{i.other}}" class="form-check-input"><label class="form-check-label">Other</label>
+                            <input type="radio" name="gender" value="male" class="form-check-input"><label class="form-check-label">Male</label>
+                            <input type="radio" name="gender" checked="true" value="female" class="form-check-input"><label class="form-check-label">Female</label>
+                            <input type="radio" name="gender" value="other" class="form-check-input"><label class="form-check-label">Other</label>
                             {% else %}
-                            <input type="radio" name="gender" value="{{i.male}}" class="form-check-input"><label class="form-check-label">Male</label>
-                            <input type="radio" name="gender" value="{{i.female}}" class="form-check-input"><label class="form-check-label">Female</label>
-                            <input type="radio" name="gender" checked="true" value="{{i.other}}" class="form-check-input"><label class="form-check-label">Other</label>
+                            <input type="radio" name="gender" value="male" class="form-check-input"><label class="form-check-label">Male</label>
+                            <input type="radio" name="gender" value="female" class="form-check-input"><label class="form-check-label">Female</label>
+                            <input type="radio" name="gender" checked="true" value="other" class="form-check-input"><label class="form-check-label">Other</label>
                             {% endif %}
                         </td>
                     </tr>
