@@ -7,7 +7,7 @@
           <div class="content">
             <div class="profile-pic">
                 {% for i in settings %}
-                <img src="{{i.photo.url}}" alt="" height="350px" width="300px"></li>
+                <img src="{{i.photo.url}}" alt="" height="150px" width="150px" style="border-radius: 10px;"></li>
                 {% endfor %}
                 <form action="{% url 'change_photo' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}

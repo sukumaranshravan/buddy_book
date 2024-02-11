@@ -9,7 +9,7 @@
                         <tr>
                             
                             <td class="form-control"><div class="col-2">                                
-                                <img src="{{i.request_from.photo.url}}" alt="No picture" height="100px" width="100px" >                              
+                                <a href="{% url 'view_profile' i.request_from.id %}"><img src="{{i.request_from.photo.url}}" alt="No picture" height="100px" width="100px" ></a>                              
                             </div>{{i.request_from.first_name}}&nbsp;{{i.request_from.last_name}}</td>                        
                         </tr>
                         <tr>                            
